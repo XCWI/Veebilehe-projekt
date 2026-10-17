@@ -10,6 +10,7 @@ $ git add UUDETUD-FAILI-NIMI
 $ git commit -m "KOMMENTAAR MUUDATUSTE KOHTA"
 $ git push # lisab versioonihoidlasse (internetis)
 """
+
 import random
 import sys
 import copy
@@ -49,8 +50,8 @@ kolmikud: tuple = (
 
 class TRIPSTRAPSTRULL:
     def __init__(self) -> None:
-        self.Xmärk: str = f"{Xvärv}X{muuvärv}"  # 1. mängija
-        self.Omärk: str = f"{Ovärv}O{muuvärv}"  # 2. mängija
+        self.Xmärk: str = "X"  # 1. mängija
+        self.Omärk: str = "O"  # 2. mängija
 
         self.väljak: list[str] = []  # mänguväljak
         self.n: int = 0  # jooksva käigu number alustame 1st
@@ -70,13 +71,10 @@ class TRIPSTRAPSTRULL:
         Returns:
             bool: True: käik tehtud, False: seal oli kellegi märk juba ees
         """
-        if len(self.väljak[idx]) == 1:  # kontrollime kas on vaba
-            # paarisarvulised käigud teeb 'O', paaritud 'X'
-            käija, _ = self.kes_mis_märgiga_mängib()
-            self.väljak[idx] = käija
-            return True  # oli vaba, sinna sai käia
-        else:
-            return False  # sinna on juba käidud
+
+        käija, _ = self.kes_mis_märgiga_mängib()
+        self.väljak[idx] = käija
+
 
     def tee_juhuslik_käik(self) -> int:
         """Vali juhuslikult vabade lahtrite hulgast üks
@@ -116,7 +114,7 @@ class TRIPSTRAPSTRULL:
                     continue
             except:
                 print("Sinna ei saa käia!")  # küsime uuesti
-
+                
     def mängi(self) -> None:
         """Mängime, küsime/teeme käike, näitame mänguväljakut jne"""
         self.vali_mängijad()
@@ -218,11 +216,12 @@ class TRIPSTRAPSTRULL:
         self.väljak (list[str]): mänguväljak
         muuvärv (str): vaikimisi mänguväljaku värv
         """
-        print(f"{muuvärv}{self.väljak[1]}|{self.väljak[2]}|{self.väljak[3]}")
+        """print(f"{muuvärv}{self.väljak[1]}|{self.väljak[2]}|{self.väljak[3]}")
         print("-+-+-")
         print(f"{self.väljak[4]}|{self.väljak[5]}|{self.väljak[6]}")
         print("-+-+-")
-        print(f"{self.väljak[7]}|{self.väljak[8]}|{self.väljak[9]}")
+        print(f"{self.väljak[7]}|{self.väljak[8]}|{self.väljak[9]}")"""
+        return self.väljak
 
     def kas_saab_1_käiguga_võita(self, märk) -> int:
         """Kontrolli kas `märk` saab 1 käiguga võita
@@ -317,7 +316,7 @@ class TRIPSTRAPSTRULL:
             return False
         """
         # versioon 4: vaatame lahtri sisu pikkust, X ja o on koos värvikoodiga, 1...9 ilma (pikkus==1)
-        return len(self.väljak[idx]) == 1
+        return (self.väljak[idx] != "X" and self.väljak[idx] != "O")
 
     def kas_keegi_võitis(self, kuva_võitjat: bool = True) -> bool:
         """Vaatame kas keegi sai kolm ritta, veergu või diagonaali.
@@ -329,18 +328,18 @@ class TRIPSTRAPSTRULL:
         Returns:
             bool: True: Keegi võitis (vastav teade ekraanil), False: Keegi ei võitnud.
         """
+        mängija_nr = 0
         for k in kolmikud:
             if self.väljak[k[0]] == self.väljak[k[1]] == self.väljak[k[2]]:
                 mängija_nr = (
                     2 if self.n % 2 == 0 else 1
                 )  # paarisarvulised käigud teeb 2. mämgija, paaritud 1. mängija
-                if kuva_võitjat == True:
-                    print(f"{mängija_nr}. mängija ({self.väljak[k[0]]}) võitis mängu.")
-                return True
-        return False
+                return True, mängija_nr
+        return False, mängija_nr
 
 
 if __name__ == "__main__":    
+    
     while True:
         ttt = TRIPSTRAPSTRULL()
         ttt.mängi()
