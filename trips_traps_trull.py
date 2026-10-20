@@ -59,8 +59,8 @@ class TRIPSTRAPSTRULL:
         self.kes_mängib: str = (
             "  1. Inimene valib käigu\n  2. Arvuti käib juhuslikult\nValik? "
         )
-        self.esimene_mängija: int = 0  # valik stringist kes_mängib
-        self.teine_mängija: int = 0  # valik stringist kes_mängib
+        self.esimene_mängija: int = '0'  # valik stringist kes_mängib
+        self.teine_mängija: int = '0'  # valik stringist kes_mängib
 
     def käi_lahtrisse(self, idx: int) -> bool:
         """Käigukorrale vastav märk indeksiga etteaantud kohta mänguväljakul
