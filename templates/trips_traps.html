@@ -10,20 +10,21 @@
         });
 
         const data = await response.json();
-        if (data.message == '1'){document.getElementById(cellIndex).innerHTML = data.player;}
-        if (data.won == "1"){document.getElementById("winner").innerHTML = 'Won player ' + data.winner;}
-        if (data.ai == "1" && data.message == '1' && data.won != '1'){
-            const response = await fetch("/ai_play",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                });
-        const data = await response.json();
-        {document.getElementById(data.spot).innerHTML = data.player;}
-        if (data.won == "1"){document.getElementById("winner").innerHTML = 'Won player ' + data.winner;}
-            }
+        if (data.message == '1'){document.getElementById(cellIndex).innerHTML = data.player;
+            if (data.won == "1"){document.getElementById("winner").innerHTML = 'Won player ' + data.winner;}
+            if (data.ai == "1" && data.message == '1' && data.won != '1'){
+                const response = await fetch("/ai_play",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+            const data = await response.json();
+            {document.getElementById(data.spot).innerHTML = data.player;}
+            if (data.won == "1"){document.getElementById("winner").innerHTML = 'Won player ' + data.winner;}
+                }
+        }
     }
     async function other_player() {
         const response = await fetch("/other_player", {

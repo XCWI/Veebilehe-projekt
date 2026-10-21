@@ -46,8 +46,12 @@ def home_page():
 def move():
     data = request.get_json()
     cell_index = int(data["cell_index"])
+    check, _ = game.kas_keegi_võitis()
+    if check:
+        return jsonify(message='0')
     a = game.kas_vaba(cell_index)
-    game.käi_lahtrisse(cell_index)
+    if a:
+        game.käi_lahtrisse(cell_index)
     player,_ = game.kes_mis_märgiga_mängib()
     if a:
         game.n += 1
