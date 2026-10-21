@@ -31,16 +31,16 @@ class dict:
         for i in range(1,10):
             self.tmp[i-1]["label"]=self.a[i]
 game = TRIPSTRAPSTRULL()
+
+@app.route("/", methods=["POST", "GET"])
+def home_page():
+    return render_template("home.html")
+
 @app.route("/other_player", methods=["POST", "GET"])
 def other_palyer():
     data = request.get_json()
     game.teine_mängija = data["other_player"]
     return jsonify(message="done")
-@app.route("/", methods=["POST", "GET"])
-def home_page():
-    game.tee_tühi_väljak()
-    tmp = dict(game.näita_väljakut())
-    return render_template("field.html", field=tmp.tmp)
 
 @app.route("/move", methods=["POST"])
 def move():

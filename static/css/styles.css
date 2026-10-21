@@ -1,0 +1,25 @@
+head {
+    color: blue;
+    background-color: aquamarine;
+    border: 10px solid red;
+}
+body {
+    background-color: black;
+    color: rgb(159, 75, 75);
+}
+h1 {
+    text-align: center;
+    font-size: 100px;
+}
+div.container {
+    display: flex;
+    justify-content: center;
+}
+button.container2 {
+    float: left;
+    border: 4px solid green;
+    padding: 60px;
+}
+#game_2 {
+    margin-left: 500px;
+}
