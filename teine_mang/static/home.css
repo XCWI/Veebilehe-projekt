@@ -1,0 +1,30 @@
+div {
+    position:relative;
+    height: 260px;
+    width: 260px;
+    background-color: blue;
+    border: 2px solid black;
+    border-radius: 90%;
+    padding: 0px;
+}
+pre {
+    margin: 0;
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: justify;
+    padding: 0px;
+    padding-bottom: 3px;
+    border: 3px solid green;
+    border-radius: 90%;
+}
+
+p {
+    margin: 0;
+    font: 50;
+    font-weight:bold;
+    font-size: 0px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: justify; 
+    text-justify: auto;
+    white-space: pre;
+}
