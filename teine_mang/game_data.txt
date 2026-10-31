@@ -1,0 +1,1 @@
+{"age_of_homo_sapiens": 247, "population": 9905.0, "population_cap": 10000, "discovered_worlds": ["Africa"], "discover_next": "Europe", "population_growth_rate": 0.01, "food": 1000, "houses": 0, "factories": 0, "wheat": 0, "sheep": 0}

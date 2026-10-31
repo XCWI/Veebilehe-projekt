@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Home Page</title>
+        <script>
+            setInterval(get_data, 1000);
+            async function get_data() {
+                const some_data = await fetch('/game_data',
+                    {
+                        method: 'POST'
+                    }
+                );
+                const data = await some_data.json();
+                for (const item of data){document.getElementById(item.info).innerHTML = item.value;}
+            }
+            async function start_game() {
+                const send_data = fetch("/start_game");
+                
+            }
+            async function gather_food() {
+                const send_data = fetch("/gather_food");
+            }
+        </script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    </head>
+    <body>
+        <button onclick="start_game()">Start Game</button>
+        <table>
+            <tr>
+                <td>Population</td>
+                <td id="population"></td>
+            </tr>
+            <tr>
+                <td>Food</td>
+                <td id="food"></td>
+            </tr>
+            <tr>
+                <td>Population Cap</td>
+                <td id="population_cap"></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th colspan="2">Actions</th>
+            </tr>
+            <tr>
+                <td>Gather food</td>
+                <td><button onclick="gather_food()">+</button></td>
+            </tr>
+        </table>
+        <div><p> <pre>
+        _____
+    ,-:` \;',`'-,
+  .'-;_,;  ':-;_,'. 
+ /;   '/    ,  _`.-\ 
+| '`. (`     /` ` \`| 
+|:.  `\`-.   \_   / | 
+|     (   `,  .`\ ;'|
+ \     | .'     `-'/ 
+  `.   ;/        .' 
+     `'-._____. 
+        </pre></p></div>
+    </body>
+</html>
