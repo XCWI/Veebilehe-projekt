@@ -3,8 +3,27 @@
 <html>
     <head>
         <title>Home Page</title>
-        <script src="{{ url_for('static', filename='js/earth_spin.js')}}"></script>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+        <script>
+            setInterval(get_data, 1000);
+            async function get_data() {
+                const some_data = await fetch('/game_data',
+                    {
+                        method: 'POST'
+                    }
+                );
+                const data = await some_data.json();
+                for (const item of data){document.getElementById(item.info).innerHTML = item.value;}
+            }
+            async function start_game() {
+                const send_data = fetch("/start_game");
+                
+            }
+            async function gather_food() {
+                const send_data = fetch("/gather_food");
+            }
+        </script>
+        <script src="js/earth_spin.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     </head>
     <body>
         <button onclick="start_game()">Start Game</button>
@@ -23,7 +42,7 @@
                     <td id="population_cap"></td>
                 </tr>
             </table>
-        <div class="earth_ascii"><p id="p_earth"> <pre class="earth_ascii_text">
+        <div class="earth_ascii"><p> <pre class="earth_ascii_text">
                _-o#&&*''''?d:>b\_
           _o/"`''  '',, dMF9MMMMMHo_
        .o&#'        `"MbHMMMMMMMMMMMHo.
@@ -74,6 +93,5 @@ HMMMMMMMHo                 `MMMMMMMMMT       .
                 </tr>
             </table>
         </div>
-        <p id="text2">Just some text</p>
     </body>
 </html>

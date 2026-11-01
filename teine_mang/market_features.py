@@ -15,8 +15,15 @@ class earth:
         self.population = 1000
         self.population_cap = 50000
         self.population_growth = 0.006
+
+        # Erinevaid ressursid
+        self.knowledge = 0
         self.food = 0
+        self.wood = 0
+        self.stone = 0
         self.discovered_worlds = ["Africa"]
+        
+        
         # Erinevad kontinendid kujul {<kontinent>: [<vajaminev pop>, {"food": <palju toitu lisandub>, "pop_cap": <palju lisandub>}]}
         self.world = {'Africa': [0, {'food': 1000, 'population_cap': 1000000}], 'Europe': [10000, {'food': 500, 'population_cap': 2000000}], 'Asia': [50000, {'food': 500, 'population_cap': 2000000}], 'Oceania': [100000, {'food': 500, 'population_cap': 2000000}], 'North-America': [1000000, {'food': 500, 'population_cap': 2000000}], 'South-America': 1500000, 'North Pole': 20000000, 'Antarctica': 100000000}
         self.continents = ['Africa', 'Europe', 'Asia', 'Oceania', 'North-America', 'South-America', 'North Pole', 'Antarctica']
@@ -49,28 +56,13 @@ class earth:
         self.discover_next = self.continents[self.continents.index(self.discover_next)+1]
         self.next_milestone = self.world[self.discover_next][0]
 
-    def game_input(self):
-        user_input = input("Press something\n")
-        print('You pressed', user_input)
-    
-    def simulate(self):  
-        when = time.monotonic()
-        intervals = 2
-        while not stop_sign.is_set():
-            if self.population >= self.next_milestone:
-                self.discover_new_worlds()
-            self.year += 1
-            when += intervals
-            time.sleep(max(0, when-time.monotonic()))
-
 Earth = earth()
 
 threads = []
 # motlesin, et teeb threadidega, siis on on leht rohkem responsive
 thread_population = threading.Thread(target=Earth.game_tick, daemon=True)
 #thread_user_input = threading.Thread(target=Earth.game_input, daemon=True)
-thread_simulation = threading.Thread(target=Earth.simulate, daemon=True)
-threads.extend([thread_population, thread_simulation])
+threads.extend([thread_population])
 
 @app.route("/", methods=['GET'])
 def home_page():

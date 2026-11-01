@@ -15,6 +15,3 @@ async function start_game() {
 async function gather_food() {
     const send_data = fetch("/gather_food");
 }
-async function test() {
-    document.getElementById("text2").innerHTML = "rohkem";    
-}
