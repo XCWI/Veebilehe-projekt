@@ -1,25 +1,24 @@
-div {
+.earth_ascii {
     position:relative;
-    height: 260px;
-    width: 260px;
-    background-color: blue;
+    height: 280px;
+    width: 280px;
+    background-color: rgb(30, 30, 135);
     border: 2px solid black;
     border-radius: 90%;
     padding: 0px;
 }
-pre {
+.earth_ascii_text {
     margin: 0;
-    font-size: 20px;
+    font-size: 10px;
     font-family: 'Courier New', Courier, monospace;
     text-align: justify;
     padding: 0px;
     padding-bottom: 3px;
-    border: 3px solid green;
-    border-radius: 90%;
+    color: rgb(2, 198, 2);
 }
 
-p {
-    margin: 0;
+#p_earth {
+    margin-top: 5px;
     font: 50;
     font-weight:bold;
     font-size: 0px;
@@ -27,4 +26,11 @@ p {
     text-align: justify; 
     text-justify: auto;
     white-space: pre;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: bisque;
+    padding: 10px;
 }

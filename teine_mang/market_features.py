@@ -10,23 +10,30 @@ stop_sign = threading.Event()
 
 class earth:
     def __init__(self):
+        # Populatisiooni arvutamiseks kasutan hetkel pop_capi ja pop_growth
+        # pop_growth arvutan labi toidu ja pop_capi, peaks muutma
         self.population = 1000
         self.population_cap = 50000
         self.population_growth = 0.006
         self.food = 0
         self.discovered_worlds = ["Africa"]
+        # Erinevad kontinendid kujul {<kontinent>: [<vajaminev pop>, {"food": <palju toitu lisandub>, "pop_cap": <palju lisandub>}]}
         self.world = {'Africa': [0, {'food': 1000, 'population_cap': 1000000}], 'Europe': [10000, {'food': 500, 'population_cap': 2000000}], 'Asia': [50000, {'food': 500, 'population_cap': 2000000}], 'Oceania': [100000, {'food': 500, 'population_cap': 2000000}], 'North-America': [1000000, {'food': 500, 'population_cap': 2000000}], 'South-America': 1500000, 'North Pole': 20000000, 'Antarctica': 100000000}
         self.continents = ['Africa', 'Europe', 'Asia', 'Oceania', 'North-America', 'South-America', 'North Pole', 'Antarctica']
         self.year = 0
+        # loogika jarjepidamiseks. veits sloppy
         self.discover_next = 'Europe'
         self.next_milestone = 10000
+        # mangu ticki arvutamine
         self.next_tick = time.monotonic() + 1
     
     def game_tick(self):
+        # iga 0.5 sek toimub 
         intervals = 0.5
         when = time.monotonic()
         while self.population < self.population_cap and not stop_sign.is_set():
             self.next_tick += 1
+            # pop = pop + growth*pop*(1-pop/cap) also lisan 0.5 ja roundin, et vaga vaikeste arvude korral oleks ka juurdekasv
             self.population += round(self.population_growth*self.population*(1-self.population/self.population_cap)+0.5,0)
             self.food = max(0, self.food - self.population*0.0005)
             when += intervals
@@ -59,6 +66,7 @@ class earth:
 Earth = earth()
 
 threads = []
+# motlesin, et teeb threadidega, siis on on leht rohkem responsive
 thread_population = threading.Thread(target=Earth.game_tick, daemon=True)
 #thread_user_input = threading.Thread(target=Earth.game_input, daemon=True)
 thread_simulation = threading.Thread(target=Earth.simulate, daemon=True)
