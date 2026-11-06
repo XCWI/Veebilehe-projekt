@@ -2,8 +2,8 @@
 
 // proovib hoida kindlat keelt läbi koodi
 // also lugesin, et js kasutatakse camelCase, seega proovime seda kasutada
-class incrementalGame {
-    constructor() {
+class incrementalGame 
+    constructor() 
         this.population = 9905.0; // Algne populatsioon
         this.growthRate =  0.01; // Kasvu määr (1%)
         this.popLimit = 10000 // Maksimaale populatsioon
@@ -13,7 +13,14 @@ class incrementalGame {
 
         this.knowledge = 0;
         this.knowledgeRate = 0.1;
-    }
+
+        // upgrades
+        // võiks olla järgnevas loogikas, upgrades = map(
+        //                  [<upgradeId>, map(["name", <upgradeName>],
+        //                                     ["currentLevel", <currentLevel>])
+        //                                  ])
+        this.woodProductionUpgrades = 
+    
 
 
     addToPopulation() {
@@ -44,4 +51,4 @@ class incrementalGame {
         // lisab knowledge juurdekasvule argumendi vaartuse
         this.knowledgeRate += toKnowledgeRate;
     }
-}
+
