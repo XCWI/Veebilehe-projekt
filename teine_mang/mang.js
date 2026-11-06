@@ -19,7 +19,16 @@ class incrementalGame
         //                  [<upgradeId>, map(["name", <upgradeName>],
         //                                     ["currentLevel", <currentLevel>])
         //                                  ])
-        this.woodProductionUpgrades = 
+        this.Upgrades = new Map([
+            ["hoeUpgrade", Map([
+                ["maxLevel", 10],
+                ["baseCost", 100],
+                ["costMultiplier", 1.5],
+                ["baseEffect", 20],
+                ["EffectPerLevel", 1.4] 
+            ])],
+            [""]
+        ])
     
 
 
