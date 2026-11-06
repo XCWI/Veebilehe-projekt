@@ -2,11 +2,11 @@
 
 // proovib hoida kindlat keelt läbi koodi
 // also lugesin, et js kasutatakse camelCase, seega proovime seda kasutada
-class incrementalGame 
-    constructor() 
+class incrementalGame {
+    constructor() {
         this.population = 9905.0; // Algne populatsioon
         this.growthRate =  0.01; // Kasvu määr (1%)
-        this.popLimit = 10000 // Maksimaale populatsioon
+        this.popLimit = 10000; // Maksimaale populatsioon
     
         this.wood = 0;
         this.woodRate = 1;
@@ -14,23 +14,23 @@ class incrementalGame
         this.knowledge = 0;
         this.knowledgeRate = 0.1;
 
-        // upgrades
-        // võiks olla järgnevas loogikas, upgrades = map(
-        //                  [<upgradeId>, map(["name", <upgradeName>],
-        //                                     ["currentLevel", <currentLevel>])
-        //                                  ])
-        this.Upgrades = new Map([
-            ["hoeUpgrade", Map([
-                ["maxLevel", 10],
-                ["baseCost", 100],
-                ["costMultiplier", 1.5],
-                ["baseEffect", 20],
-                ["EffectPerLevel", 1.4] 
-            ])],
-            [""]
-        ])
-    
-
+        this.Upgrades = {
+            "hoeUpgrade": {
+                "maxLevel": 4,
+                "initialCost": 20,
+                "costPerLevel": 1.4,
+                "initialUpgradeState": 4,
+                "initialUpgradePerLevel": 1.2
+            },
+            "pickaxeUpgrade": {
+                "maxLevel": 4,
+                "initialCost": 20,
+                "costPerLevel": 1.4,
+                "initialUpgradeState": 4,
+                "initialUpgradePerLevel": 1.2
+            }
+        };
+    }
 
     addToPopulation() {
         // Arvutab uue populatsiooni
@@ -43,12 +43,12 @@ class incrementalGame
 
     addToWood() {
         // Arvutab uue puidu koguse
-        this.wood += this.woodRate
+        this.wood += this.woodRate;
     }
 
     addToWoodRate(toWoodProduction) {
         // lisab puidu juurdekasvule argumendi väärtuse
-        this.woodProduction += toWoodProduction;
+        this.woodRate += toWoodProduction;
     }
 
     addToKnowledge() {
@@ -60,4 +60,4 @@ class incrementalGame
         // lisab knowledge juurdekasvule argumendi vaartuse
         this.knowledgeRate += toKnowledgeRate;
     }
-
+}
