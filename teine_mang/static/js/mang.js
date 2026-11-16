@@ -46,22 +46,15 @@ class incrementalGame {
         this.wood += this.woodRate;
     }
 
-    addToWoodRate(toWoodProduction) {
-        // lisab puidu juurdekasvule argumendi väärtuse
-        this.woodRate += toWoodProduction;
-    }
 
     addToKnowledge() {
         // Arvutab uue knowledge koguse
         this.knowledge += this.knowledgeRate;
     }
 
-    addToKnowledgeRate(toKnowledgeRate) {
-        // lisab knowledge juurdekasvule argumendi vaartuse
-        this.knowledgeRate += toKnowledgeRate;
-    }
 
     upgradesFunction(upgradeName) {
         let upgrade = this.Upgrades[upgradeName];
+        
     }
 }
