@@ -87,15 +87,26 @@ class incrementalGame {
         this.foodRate += toFoodRate;
     }
 
-    upgradeHoe() {
-        // Kontrollib, kas mängijal on piisavalt ressursse, et teha upgrade
-        if (this.wood >= this.Upgrades.hoeUpgrade.initialCost) {
-            // Vähendab puidu kogust vastavalt upgrade maksumusele
-            this.wood -= this.Upgrades.hoeUpgrade.initialCost;
-            // Suurendab puidu tootmise määra vastavalt upgrade perkidele
-            this.addToFoodRate(this.Upgrades.hoeUpgrade.initialUpgradePerk);
-            // Suurendab upgrade taset
-            this.Upgrades.hoeUpgrade.initialUpgradePerk *= this.Upgrades.hoeUpgrade.initialUpgradePerLevel;
+    upgradeFunction(upgradeName) {
+        const upgrade = this.Upgrades[upgradeName];
+        // Kontrollib, kas upgrade on olemas ja kas see pole juba maksimaalsel tasemel  
+        if (!upgrade) {
+            return false;
         }
+        
+        if (!upgrade || upgrade.level < upgrade.maxLevel) {
+                for (let resource in upgrade.initialCost) {
+                const cost = Math.ceil(
+                    upgrade.initialCost[resource] *
+                    upgrade.costPerLevel ** upgrade.level
+                    );
+                    // Kontrollib, kas mängijal on piisavalt ressursse upgrade'i ostmiseks,
+                    // kui ressursid on olemas, siis tagastab true, muidu false
+                    if ((this.Resources[resource] ?? 0) < cost) {
+                        return false;
+                    }
+            }
+                return true;
+        }         
     }
 }
