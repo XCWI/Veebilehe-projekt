@@ -89,11 +89,11 @@ class incrementalGame {
 
     upgradeFunction(upgradeName) {
         const upgrade = this.Upgrades[upgradeName];
-        // Kontrollib, kas upgrade on olemas ja kas see pole juba maksimaalsel tasemel  
+        // Kontrollib, kas upgrade on olemas  
         if (!upgrade) {
             return false;
         }
-        
+        // Kontrollib, kas upgrade on lubatud (kas upgrade'i tase on väiksem kui maksimaalne tase)
         if (!upgrade || upgrade.level < upgrade.maxLevel) {
                 for (let resource in upgrade.initialCost) {
                 const cost = Math.ceil(
