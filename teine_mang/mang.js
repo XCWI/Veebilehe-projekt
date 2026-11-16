@@ -60,4 +60,8 @@ class incrementalGame {
         // lisab knowledge juurdekasvule argumendi vaartuse
         this.knowledgeRate += toKnowledgeRate;
     }
+
+    upgradesFunction(upgradeName) {
+        let upgrade = this.Upgrades[upgradeName];
+    }
 }
