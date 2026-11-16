@@ -17,6 +17,7 @@ class incrementalGame {
         this.knowledgeRate = 0.1;
         
         this.Upgrades = {
+            // peaks täpsustama mis ressursse on vaja, et teha upgrade
             "hoeUpgrade": {
                 "maxLevel": 4,
                 "initialCost": 20,
