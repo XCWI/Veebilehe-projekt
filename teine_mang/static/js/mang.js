@@ -4,17 +4,17 @@
 // also lugesin, et js kasutatakse camelCase, seega proovime seda kasutada
 class incrementalGame {
     constructor() {
-        this.gameRunning = 0;
+        this.gameRunning = 1;
         
         this.population = 9905.0; // Algne populatsioon
         this.growthRate =  0.01; // Kasvu määr (1%)
         this.popLimit = 10000; // Maksimaale populatsioon
     
-        this.wood = 0;
+        this.wood = 2;
         this.woodRate = 1;
 
         this.knowledge = 0;
-        this.knowledgeRate = 0.1;
+        this.knowledgeRate = 1;
         
         this.Upgrades = {
             // peaks täpsustama mis ressursse on vaja, et teha upgrade
@@ -36,16 +36,23 @@ class incrementalGame {
     }
 
     gameTick() {
+        
         // Arvutab uue populatsiooni ja kontrollib, kas populatsioon on ületanud limiidi
-        this.population = min(this.population * (1 + this.growthRate), this.popLimit);
+        this.population = Math.min(this.population * (1 + this.growthRate), this.popLimit);
         // Arvutab teisi stat
         this.wood += this.woodRate;
         this.knowledge += this.knowledgeRate;
         // Peaks lisama veel stat e
-
+        document.getElementById('food').textContent = this.wood;
+        this.updateInfo();
+        
         }
     updateInfo() {
-
+        document.getElementById('food').textContent = this.food;
+        const statsList = document.getElementsByClassName('stat-value');
+        for(const i of statsList){
+            document.getElementById('wood').textContent = this.wood;
+        }
     }
 
     upgradeFunction(upgradeName) {
@@ -71,9 +78,9 @@ class incrementalGame {
         }         
     }
 }
-game = incrementalGame;
+const game = new incrementalGame;
 async function startStopGame() {
-    document.getElementById('pop')
-    if (!game.gameRunning){var gameTicker = setInterval(game.gameTick, 1000);}
-    else {clearInterval(gameTicker);}
+    document.getElementById('knowledge').textContent = game.population;
+    if (game.gameRunning){var gameTicker = setInterval(game.gameTick, 1000); game.gameRunning=0;}
+    else {clearInterval(gameTicker); game.gameRunning=1;}
 }
