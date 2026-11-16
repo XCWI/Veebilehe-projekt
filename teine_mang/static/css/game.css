@@ -1,26 +1,22 @@
-﻿/* ================= ÜLDISED VÄRVID JA FONDID (CSS muutujad) ================= */
-/* Muutujaid kasutades saad kogu lehe värve ühest kohast korraga muuta */
+﻿/* Põhivärvid */
 :root {
-    --bg-dark: #0f111a;             /* Kõige tumedam taustavärv (tööala taust) */
-    --panel-bg: #141724;            /* Külgriba ja päise taustavärv */
-    --card-bg: #1a1d2e;             /* Uuenduste kastide ja vahekaartide taust */
-    --accent-green: #02c602;        /* Põhiline neoonroheline aktsentvärv */
-    --accent-green-hover: #03e603;  /* Heledam roheline, kui hiir on nupu peal */
-    --text-primary: #f3f4f6;        /* Peamine hele tekstivärv */
-    --text-secondary: #9ca3af;      /* Hallikas abitekstide värv */
-    --border-color: #2e344e;        /* Kastide ja paneelide äärisejooned */
-    --font-mono: 'Courier New', Courier, monospace; /* Koodilik font numbritele ja nuppudele */
-    --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --bg-dark: #0f111a;
+    --panel-bg: #141724;
+    --card-bg: #1a1d2e;
+    --accent-green: #02c602;
+    --text-primary: #f3f4f6;
+    --text-secondary: #9ca3af;
+    --border-color: #2e344e;
+    --font-mono: 'Courier New', Courier, monospace;
+    --font-main: Arial, sans-serif;
 }
 
-/* Nullib brauseri vaikimisi veerised (margin/padding), et paigutus oleks täpne */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Hoiab lehe täpselt ekraani kõrgusena (100vh) ja peidab üleliigse kerimisriba */
 body {
     background-color: var(--bg-dark);
     color: var(--text-primary);
@@ -29,26 +25,22 @@ body {
     overflow: hidden;
 }
 
-/* ================= PÕHIPAIGUTUS (GRID) ================= */
-/* Jagab ekraani 2 veergu: vasak pool võtab kogu vaba ruumi (1fr), parem külgriba on 340px lai */
+/* Jagab lehe kaheks: vasakul tööala, paremal 320px lai STATS riba */
 .game-layout {
     display: grid;
-    grid-template-columns: 1fr 340px;
+    grid-template-columns: 1fr 320px;
     height: 100vh;
-    width: 100vw;
 }
 
-/* ================= VASAK POOL ================= */
-/* Paigutab päise, kategooriate riba ja kastide ala üksteise alla (flex-direction: column) */
+/* Vasak pool */
 .main-area {
     display: flex;
     flex-direction: column;
-    border-right: 2px solid var(--border-color); /* Eraldusjoon vasaku ja parema poole vahel */
+    border-right: 2px solid var(--border-color);
     height: 100%;
-    overflow: hidden;
 }
 
-/* Ülemine päiseriba: lükkab tagasilingi vasakule ja nupud paremale (space-between) */
+/* Ülemine riba */
 .top-bar {
     display: flex;
     justify-content: space-between;
@@ -58,54 +50,45 @@ body {
     border-bottom: 2px solid var(--border-color);
 }
 
-/* "Tagasi pealehele" link */
 .back-link {
     color: var(--text-secondary);
     text-decoration: none;
-    font-size: 0.95rem;
-    transition: color 0.2s;
 }
 
 .back-link:hover {
     color: var(--accent-green);
 }
 
-/* Päise parempoolsete nuppude rühm */
 .quick-actions {
     display: flex;
     gap: 0.75rem;
-    align-items: center;
 }
 
-/* Roheline "Alusta Mängu" nupp */
+/* Nupud */
 .btn-start {
     background-color: var(--accent-green);
     color: #0b130b;
     border: none;
-    padding: 0.55rem 1.2rem;
+    padding: 0.5rem 1rem;
     font-family: var(--font-mono);
-    font-weight: 700;
-    border-radius: 6px;
+    font-weight: bold;
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
-.btn-start:hover {
-    background-color: var(--accent-green-hover);
-    box-shadow: 0 0 12px rgba(2, 198, 2, 0.5); /* Roheline helendus hiirega peale minnes */
+.btn-start:disabled {
+    opacity: 0.5;
+    cursor: default;
 }
 
-/* "+ Kogu toitu" ja "+ Raiu puitu" nupud */
 .action-btn {
-    background-color: rgba(2, 198, 2, 0.1);
+    background-color: transparent;
     color: var(--accent-green);
     border: 1px solid var(--accent-green);
     padding: 0.5rem 0.9rem;
-    border-radius: 6px;
-    font-size: 0.85rem;
+    border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
 .action-btn:hover {
@@ -113,79 +96,55 @@ body {
     color: #0b130b;
 }
 
-/* ================= KATEGOORIATE RIBA (PUIT | TOIT | jne) ================= */
-/* Jagab riba 5 võrdseks lahtriks (repeat(5, 1fr)) */
+/* Kategooriate riba (2 vahekaarti) */
 .category-tabs {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: 1fr 1fr;
     background: var(--card-bg);
     border-bottom: 2px solid var(--border-color);
 }
 
-/* Üksiku kategoorianupu stiil */
 .tab-btn {
     background: transparent;
     color: var(--text-secondary);
     border: none;
-    border-right: 1px solid var(--border-color); /* Püstine eraldusjoon nuppude vahel */
-    padding: 0.85rem 1rem;
+    border-right: 1px solid var(--border-color);
+    padding: 0.85rem;
     font-family: var(--font-mono);
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    font-weight: bold;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
-.tab-btn:last-child {
-    border-right: none; /* Viimasel nupul pole parempoolset äärist vaja */
-}
-
-.tab-btn:hover {
-    color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.03);
-}
-
-/* Aktiivse (parajasti valitud) kategooria stiil: roheline tekst ja roheline joon all */
 .tab-btn.active {
     color: var(--accent-green);
     background: var(--bg-dark);
-    box-shadow: inset 0 -3px 0 var(--accent-green);
+    border-bottom: 3px solid var(--accent-green);
 }
 
-/* ================= KESKMINE ALA: UUENDUSTE KASTID ================= */
-/* Võtab enda alla kogu ülejäänud kõrguse (flex: 1) ja lubab vajadusel kerida (overflow-y: auto) */
+/* Keskmine kastide ala */
 .upgrades-workspace {
     flex: 1;
-    padding: 2rem;
+    padding: 1.5rem;
     overflow-y: auto;
 }
 
-/* Paigutab kastid automaatselt ridadesse (iga kast on vähemalt 290px lai) */
 .upgrades-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
 }
 
-/* Ühe uuenduse valimine kast (nt KIRKA karp) */
+/* Üksiku uuenduse kast */
 .upgrade-card {
     background: var(--card-bg);
     border: 2px solid var(--border-color);
-    border-radius: 8px;
-    padding: 1.2rem;
+    border-radius: 6px;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-    transition: border-color 0.2s ease;
+    gap: 0.8rem;
 }
 
-.upgrade-card:hover {
-    border-color: rgba(2, 198, 2, 0.5); /* Kastile tekib hiirega peale minnes õrn roheline äär */
-}
-
-/* Kasti ülemine rida: hoiab nime-nuppu vasakul ja "LVL: 4" teksti paremal */
 .card-top {
     display: flex;
     justify-content: space-between;
@@ -193,120 +152,117 @@ body {
     gap: 1rem;
 }
 
-/* Sisemine raamiga nupp eseme nime ümber (nt "KIRKA") */
 .item-buy-btn {
     flex: 1;
     background: var(--panel-bg);
     color: var(--text-primary);
-    border: 1.5px solid var(--border-color);
-    border-radius: 6px;
-    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
     text-align: left;
     font-family: var(--font-mono);
-    font-size: 1rem;
-    font-weight: 700;
+    font-weight: bold;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
 .item-buy-btn:hover {
     border-color: var(--accent-green);
     color: var(--accent-green);
-    background: rgba(2, 198, 2, 0.08);
 }
 
-/* "LVL: 4" tekst kasti paremas servas */
 .item-lvl {
     font-family: var(--font-mono);
-    font-size: 1.1rem;
     color: var(--text-secondary);
-    white-space: nowrap; /* Takistab LVL teksti murdumist kahele reale */
 }
 
 .item-lvl strong {
-    color: var(--accent-green); /* Teeb taseme numbri roheliseks */
+    color: var(--accent-green);
 }
 
-/* Kasti alumine rida ("COST: 20 puitu") */
 .card-bottom {
     font-family: var(--font-mono);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
-    padding-left: 0.2rem;
 }
 
-.card-bottom span {
-    color: var(--text-primary);
-}
-
-/* ================= PAREM KÜLGRIBA (STATS + MAA KERA) ================= */
-/* Jagab parema külgriba vertikaalselt pooleks: ülemine 1fr (STATS), alumine 1fr (Maa kera) */
-.right-sidebar {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
+/* Alumine Story kast */
+.story-box {
+    height: 160px;
     background: var(--panel-bg);
-    height: 100%;
-}
-
-/* Ülemine parem kast: Statistika */
-.stats-box {
-    padding: 1.5rem;
-    border-bottom: 2px solid var(--border-color); /* Horisontaalne joon STATS kasti all */
+    border-top: 2px solid var(--border-color);
+    padding: 1rem 1.5rem;
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
 }
 
-/* "STATS" pealkiri */
+.story-title {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--accent-green);
+}
+
+.story-log {
+    flex: 1;
+    overflow-y: auto;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.story-entry {
+    color: var(--text-secondary);
+}
+
+.story-entry:first-child {
+    color: var(--text-primary);
+}
+
+/* Parem külgriba: STATS */
+.right-sidebar {
+    background: var(--panel-bg);
+    padding: 1.5rem;
+}
+
 .panel-title {
     font-family: var(--font-mono);
-    font-size: 1.5rem;
-    color: var(--text-primary);
-    letter-spacing: 0.08em;
+    font-size: 1.4rem;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--border-color);
 }
 
-/* Statistika tabel */
 .stats-table {
     width: 100%;
     border-collapse: collapse;
 }
 
 .stats-table td {
-    padding: 0.6rem 0.2rem;
+    padding: 0.55rem 0.2rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .stat-label {
-    color: var(--text-secondary); /* Ressursi nimetus vasakul (hallikas) */
+    color: var(--text-secondary);
 }
 
 .stat-value {
-    text-align: right;            /* Ressursi väärtus paremal (roheline number) */
+    text-align: right;
     font-family: var(--font-mono);
-    font-weight: 700;
+    font-weight: bold;
     color: var(--accent-green);
 }
 
-/* Avastatud mandrite plokk statistika kasti allosas */
 .continent-info {
-    margin-top: auto; /* Lükkab mandrite info STATS kasti alumisse serva */
+    margin-top: 1.2rem;
     padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
     font-size: 0.85rem;
     color: var(--text-secondary);
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-}
-
-/* ================= KOHANDUVUS VÄIKSEMATEL EKRAANIDEL ================= */
-/* Kui ekraani laius on alla 900px, tõstab parema külgriba vasaku tööala alla */
-@media (max-width: 900px) {
-    body { height: auto; overflow: auto; }
-    .game-layout { grid-template-columns: 1fr; height: auto; }
-    .main-area { border-right: none; border-bottom: 2px solid var(--border-color); }
-    .category-tabs { grid-template-columns: repeat(2, 1fr); }
-    .right-sidebar { grid-template-rows: auto auto; }
+    gap: 0.4rem;
 }

@@ -1,170 +1,193 @@
 ﻿<!DOCTYPE html>
-<html lang="et">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Tagab, et leht kohandub ka väiksematel ekraanidel ja mobiilis -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inimkonna Tõus | Mäng</title>
-    <!-- Ühendab selle HTML-lehe static/css kaustas oleva game.css kujundusfailiga -->
+    <title>Rise of Humanity | Game</title>
+    <!-- Ühendab game.css kujundusfaili -->
     <link rel="stylesheet" href="../static/css/game.css">
 </head>
 <body>
-    <!-- Kogu mängu ümbritsev põhikonteiner (jagab ekraani vasakuks ja paremaks pooleks) -->
     <div class="game-layout">
         
-        <!-- ================= VASAK POOL: Päis, kategooriad ja uuenduste kastid ================= -->
+        <!-- VASAK POOL: Päis, kategooriad, kastid ja alumine story-logi -->
         <div class="main-area">
             
-            <!-- Ülemine päiseriba: tagasilink pealehele ja kiirtegevuste nupud -->
+            <!-- Ülemine riba -->
             <header class="top-bar">
-                <a href="home.html" class="back-link">← Tagasi pealehele</a>
+                <a href="home.html" class="back-link">← Back to Home</a>
                 <div class="quick-actions">
-                    <button class="action-btn" onclick="gather_food()">+ Kogu toitu</button>
-                    <button class="action-btn" onclick="gather_wood()">+ Raiu puitu</button>
-                    <button id="start_btn" class="btn-start" onclick="start_game()">Alusta Mängu</button>
+                    <button class="action-btn" onclick="gather_food()">+ Gather Food</button>
+                    <button id="start_btn" class="btn-start" onclick="start_game()">Start Game</button>
                 </div>
             </header>
 
-            <!-- Kategooriate menüüriba (klõpsates kutsub välja switchTab funktsiooni ja vahetab kaste) -->
+            <!-- Kategooriate riba (ainult game_data.txt asjad: Food/Farming ja Buildings) -->
             <nav class="category-tabs">
-                <button class="tab-btn active" onclick="switchTab('puit', this)">PUIT</button>
-                <button class="tab-btn" onclick="switchTab('toit', this)">TOIT</button>
-                <button class="tab-btn" onclick="switchTab('kaevandus', this)">KAEVANDUS</button>
-                <button class="tab-btn" onclick="switchTab('teadmised', this)">TEADMISED</button>
-                <button class="tab-btn" onclick="switchTab('ehitised', this)">EHITISED</button>
+                <button class="tab-btn active" onclick="switchTab('farming', this)">FARMING</button>
+                <button class="tab-btn" onclick="switchTab('buildings', this)">BUILDINGS</button>
             </nav>
 
-            <!-- Keskmine tööala, kuhu ilmuvad valitud kategooria kastid (nt KIRKA, LVL ja COST) -->
+            <!-- Keskmine ala: Uuenduste kastid -->
             <main class="upgrades-workspace">
-                <!-- JavaScript genereerib siia sisse .upgrade-card kastid -->
                 <div id="upgrades-grid" class="upgrades-grid"></div>
             </main>
+
+            <!-- Alumine kast: Story & Log -->
+            <section class="story-box">
+                <h3 class="story-title">STORY &amp; LOG</h3>
+                <div id="story-log" class="story-log">
+                    <p class="story-entry">› Press "Start Game" to begin...</p>
+                </div>
+            </section>
         </div>
 
-        <!-- ================= PAREM POOL: Üleval STATS, all Maa kera ================= -->
+        <!-- PAREM POOL: STATS (täpselt game_data.txt väljad) -->
         <aside class="right-sidebar">
-            
-            <!-- Paremal üleval: Statistika paneel (id-d on seotud mang.js ja Pythoni andmetega) -->
             <section class="stats-box">
                 <h2 class="panel-title">STATS</h2>
                 <table class="stats-table">
-                    <tr><td class="stat-label">Rahvaarv</td><td class="stat-value" id="population">9905</td></tr>
-                    <tr><td class="stat-label">Limiit</td><td class="stat-value" id="population_cap">10000</td></tr>
-                    <tr><td class="stat-label">Toit</td><td class="stat-value" id="food">0</td></tr>
-                    <tr><td class="stat-label">Puit</td><td class="stat-value" id="wood">0</td></tr>
-                    <tr><td class="stat-label">Teadmised</td><td class="stat-value" id="knowledge">0</td></tr>
+                    <tr><td class="stat-label">Population</td><td class="stat-value" id="population">0</td></tr>
+                    <tr><td class="stat-label">Population Cap</td><td class="stat-value" id="population_cap">0</td></tr>
+                    <tr><td class="stat-label">Growth Rate</td><td class="stat-value" id="population_growth_rate">0</td></tr>
+                    <tr><td class="stat-label">Food</td><td class="stat-value" id="food">0</td></tr>
+                    <tr><td class="stat-label">Houses</td><td class="stat-value" id="houses">0</td></tr>
+                    <tr><td class="stat-label">Factories</td><td class="stat-value" id="factories">0</td></tr>
+                    <tr><td class="stat-label">Wheat</td><td class="stat-value" id="wheat">0</td></tr>
+                    <tr><td class="stat-label">Sheep</td><td class="stat-value" id="sheep">0</td></tr>
                 </table>
 
-                <!-- Mandrite avastamise info statistika tabeli allservas -->
                 <div class="continent-info">
-                    <div><strong>Avastatud:</strong> <span id="discovered">Aafrika</span></div>
-                    <div><strong>Järgmine siht:</strong> <span id="next_continent">Euroopa</span></div>
+                    <div><strong>Discovered Worlds:</strong> <span id="discovered_worlds">-</span></div>
+                    <div><strong>Discover Next:</strong> <span id="discover_next">-</span></div>
                 </div>
             </section>
         </aside>
     </div>
 
-    <!-- Lehesisene skript vahekaartide vahetamiseks ja uuenduste kastide joonistamiseks -->
     <script>
-        // Andmestik: iga kategooria all on nimekiri esemetest (ID, kuvatav nimi, algtase, max tase, hind)
+        let gameStarted = false;
+        let activeCategory = "farming";
+
+        // Ainult need 4 asja, mis on game_data.txt failis (wheat, sheep, houses, factories)
         const itemsByCategory = {
-            puit: [
-                { id: "pickaxe", name: "KIRKA", lvl: 0, maxLvl: 4, cost: "20 puitu" },
-                { id: "axe", name: "KIRVES", lvl: 1, maxLvl: 5, cost: "35 puitu" },
-                { id: "sawmill", name: "SAEVESKI", lvl: 0, maxLvl: 3, cost: "120 puitu" }
+            farming: [
+                { id: "wheat", name: "WHEAT", lvl: 0, cost: 50, desc: "Planted wheat fields to produce more food." },
+                { id: "sheep", name: "SHEEP", lvl: 0, cost: 100, desc: "Domesticated sheep for a steady food supply." }
             ],
-            toit: [
-                { id: "hoe", name: "KÕBLAS (HOE)", lvl: 0, maxLvl: 4, cost: "20 puitu" },
-                { id: "crop_rotation", name: "KÜLVIKORD", lvl: 0, maxLvl: 3, cost: "50 puitu" },
-                { id: "irrigation", name: "NIISUTUS", lvl: 0, maxLvl: 3, cost: "100 puitu" }
-            ],
-            kaevandus: [
-                { id: "stone_tools", name: "KIVITÖÖRIISTAD", lvl: 1, maxLvl: 4, cost: "40 puitu" },
-                { id: "deep_mine", name: "SÜVAKAEVANDUS", lvl: 0, maxLvl: 3, cost: "150 puitu" }
-            ],
-            teadmised: [
-                { id: "writing", name: "KIRJAOSKUS", lvl: 0, maxLvl: 3, cost: "80 puitu" },
-                { id: "school", name: "ÕPPESAAL", lvl: 0, maxLvl: 4, cost: "200 puitu" }
-            ],
-            ehitised: [
-                { id: "houses", name: "MAJAD", lvl: 0, maxLvl: 10, cost: "60 puitu" },
-                { id: "storage", name: "LADU", lvl: 1, maxLvl: 5, cost: "90 puitu" }
+            buildings: [
+                { id: "houses", name: "HOUSES", lvl: 0, cost: 150, desc: "Built new houses to increase population cap." },
+                { id: "factories", name: "FACTORIES", lvl: 0, cost: 300, desc: "Built factories to boost production." }
             ]
         };
 
-        // Hoiab meeles, milline kategooria on parajasti avatud (vaikimisi "puit")
-        let activeCategory = "puit";
+        // Lisab rea alumisse story-kasti
+        function addStoryMessage(text) {
+            const log = document.getElementById("story-log");
+            const entry = document.createElement("p");
+            entry.className = "story-entry";
+            entry.textContent = "› " + text;
+            log.prepend(entry);
+        }
 
-        // Käivitub, kui kasutaja klõpsab üleval kategooria nupul (nt PUIT või TOIT)
+        // Vahetab üleval kategooriat
         function switchTab(category, btnElement) {
             activeCategory = category;
-            // Eemaldab kõikidelt kategoorianuppudelt .active klassi (rohelise joone)
             document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
-            // Lisab .active klassi sellele nupule, mille peale just vajutati
             if (btnElement) btnElement.classList.add("active");
-            // Joonistab valitud kategooria kastid uuesti ekraanile
             renderCards();
         }
 
-        // Genereerib HTML-kastid vastavalt valitud kategooriale
+        // Joonistab kastid keskmisele alale
         function renderCards() {
             const grid = document.getElementById("upgrades-grid");
-            grid.innerHTML = ""; // Tühjendab vana sisu enne uute kastide lisamist
+            grid.innerHTML = "";
             const items = itemsByCategory[activeCategory] || [];
 
             for (const item of items) {
                 const card = document.createElement("div");
-                card.className = "upgrade-card"; // Annab kastile CSS-stiili
+                card.className = "upgrade-card";
                 card.innerHTML = `
                     <div class="card-top">
-                        <!-- Raamiga nupp eseme nimega (nt KIRKA), millele klõpsates ostetakse uuendus -->
-                        <button class="item-buy-btn" id="${item.id}_btn" onclick="upgradeItem('${item.id}')">
+                        <button class="item-buy-btn" onclick="buyItem('${item.id}')">
                             ${item.name}
                         </button>
-                        <!-- Näitab eseme praegust taset (LVL) -->
-                        <span class="item-lvl">LVL: <strong id="${item.id}_lvl">${item.lvl}</strong></span>
+                        <span class="item-lvl">LVL: <strong>${item.lvl}</strong></span>
                     </div>
-                    <!-- Kasti alumine rida, mis näitab uuenduse hinda (COST) -->
                     <div class="card-bottom">
-                        COST: <span id="${item.id}_cost">${item.cost}</span>
+                        COST: <span>${item.cost} Food</span>
                     </div>
                 `;
                 grid.appendChild(card);
             }
         }
 
-        // Käivitub, kui kasutaja vajutab kasti sees eseme nimele (nt KIRKA)
-        function upgradeItem(itemId) {
+        // Eseme ostmine (suurendab LVL-i ja uuendab paremal STATS tabelit)
+        function buyItem(itemId) {
+            if (!gameStarted) {
+                addStoryMessage("Press 'Start Game' first!");
+                return;
+            }
+
+            const foodEl = document.getElementById("food");
+            let currentFood = Number(foodEl.innerText);
+
             for (const cat in itemsByCategory) {
-                const found = itemsByCategory[cat].find(i => i.id === itemId);
-                // Kui tase pole veel maksimaalne, suurendab taset 1 võrra ja uuendab vaadet
-                if (found && found.lvl < found.maxLvl) {
-                    found.lvl++;
+                const item = itemsByCategory[cat].find(i => i.id === itemId);
+                if (item) {
+                    if (currentFood < item.cost) {
+                        addStoryMessage(`Not enough food to buy ${item.name} (Need ${item.cost} Food).`);
+                        return;
+                    }
+                    // Lahutab toidu, tõstab taset ja uuendab STATS tabelit
+                    foodEl.innerText = currentFood - item.cost;
+                    item.lvl++;
+                    document.getElementById(item.id).innerText = item.lvl;
                     renderCards();
+                    addStoryMessage(`${item.name} upgraded to LVL ${item.lvl}. ${item.desc}`);
                 }
             }
-            // Kui mang.js failis on olemas buyUpgrade funktsioon, saadab ostuinfo ka Pythoni serverile
-            if (typeof buyUpgrade === "function") {
-                buyUpgrade(itemId);
-            }
         }
 
-        // Päringud Flaski serverile (try/catch väldib vigu, kui vaatad lehte ilma Pythoni serverita)
+        // Seab "Start Game" vajutamisel game_data.txt algväärtused
         async function start_game() {
+            if (!gameStarted) {
+                gameStarted = true;
+                document.getElementById("population").innerText = "9905.0";
+                document.getElementById("population_cap").innerText = "10000";
+                document.getElementById("population_growth_rate").innerText = "0.01";
+                document.getElementById("food").innerText = "1000";
+                document.getElementById("houses").innerText = "0";
+                document.getElementById("factories").innerText = "0";
+                document.getElementById("wheat").innerText = "0";
+                document.getElementById("sheep").innerText = "0";
+                document.getElementById("discovered_worlds").innerText = "Africa";
+                document.getElementById("discover_next").innerText = "Europe";
+
+                const btn = document.getElementById("start_btn");
+                btn.innerText = "Game Running";
+                btn.disabled = true;
+
+                document.getElementById("story-log").innerHTML = "";
+                addStoryMessage("Game started in Africa. Next goal: Europe.");
+            }
             try { await fetch("/start_game"); } catch (e) {}
         }
+
+        // Toidu kogumine
         async function gather_food() {
+            if (!gameStarted) {
+                addStoryMessage("Press 'Start Game' first!");
+                return;
+            }
+            const foodEl = document.getElementById("food");
+            foodEl.innerText = Number(foodEl.innerText) + 50;
+            addStoryMessage("Gathered +50 Food.");
             try { await fetch("/gather_food"); } catch (e) {}
         }
-        async function gather_wood() {
-            try { await fetch("/gather_wood"); } catch (e) {}
-        }
 
-        // Joonistab lehe avamisel kohe esimese kategooria ("puit") kastid
         renderCards();
     </script>
-
-    <!-- Ühendab välise JavaScripti faili (mang.js) -->
     <script src="../mang.js"></script>
 </body>
 </html>
