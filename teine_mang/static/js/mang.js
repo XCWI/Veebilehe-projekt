@@ -7,8 +7,8 @@ class incrementalGame {
         this.gameRunning = 1;
         
         this.population = 9905.0; // Algne populatsioon
-        this.growthRate =  0.01; // Kasvu määr (1%)
-        this.popLimit = 10000; // Maksimaale populatsioon
+        this.growthRate =  0.1; // Kasvu määr (1%)
+        this.populationCap = 1000000; // Maksimaale populatsioon
     
         this.wood = 2;
         this.woodRate = 1;
@@ -16,6 +16,9 @@ class incrementalGame {
         this.knowledge = 0;
         this.knowledgeRate = 1;
         
+        this.food = 0;
+        this.foodRate = 1;
+
         this.Upgrades = {
             // peaks täpsustama mis ressursse on vaja, et teha upgrade
             "hoeUpgrade": {
@@ -35,25 +38,16 @@ class incrementalGame {
         };
     }
 
-    gameTick() {
-        
+    gameTick() {   
         // Arvutab uue populatsiooni ja kontrollib, kas populatsioon on ületanud limiidi
-        this.population = Math.min(this.population * (1 + this.growthRate), this.popLimit);
+        this.population = Math.min(this.population * (1 + this.growthRate), this.populationCap);
         // Arvutab teisi stat
         this.wood += this.woodRate;
         this.knowledge += this.knowledgeRate;
+        this.food += this.foodRate;
         // Peaks lisama veel stat e
-        document.getElementById('food').textContent = this.wood;
-        this.updateInfo();
         
         }
-    updateInfo() {
-        document.getElementById('food').textContent = this.food;
-        const statsList = document.getElementsByClassName('stat-value');
-        for(const i of statsList){
-            document.getElementById('wood').textContent = this.wood;
-        }
-    }
 
     upgradeFunction(upgradeName) {
         const upgrade = this.Upgrades[upgradeName];
@@ -79,8 +73,16 @@ class incrementalGame {
     }
 }
 const game = new incrementalGame;
+function updateInfo() {
+    game.gameTick();
+    const statsList = document.getElementsByClassName('stat-value');
+    for(const i of statsList){
+        document.getElementById(i.id).textContent = Math.round(game[i.id]);
+    }
+}
+let gameTicker = null;
 async function startStopGame() {
-    document.getElementById('knowledge').textContent = game.population;
-    if (game.gameRunning){var gameTicker = setInterval(game.gameTick, 1000); game.gameRunning=0;}
-    else {clearInterval(gameTicker); game.gameRunning=1;}
+    if (gameTicker == null){gameTicker = setInterval(updateInfo, 1000);}
+    else {clearInterval(gameTicker);
+        gameTicker=null;}
 }
