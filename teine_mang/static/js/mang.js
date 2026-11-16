@@ -4,6 +4,8 @@
 // also lugesin, et js kasutatakse camelCase, seega proovime seda kasutada
 class incrementalGame {
     constructor() {
+        this.gameRunning = 0;
+        
         this.population = 9905.0; // Algne populatsioon
         this.growthRate =  0.01; // Kasvu määr (1%)
         this.popLimit = 10000; // Maksimaale populatsioon
@@ -13,7 +15,7 @@ class incrementalGame {
 
         this.knowledge = 0;
         this.knowledgeRate = 0.1;
-
+        
         this.Upgrades = {
             "hoeUpgrade": {
                 "maxLevel": 4,
@@ -32,29 +34,27 @@ class incrementalGame {
         };
     }
 
-    addToPopulation() {
-        // Arvutab uue populatsiooni
-        this.population = this.population * (1 + this.growthRate);
-        // Kontrollib, kas populatsioon on ületanud limiidi
-        if (this.population > this.popLimit) {
-            this.population = this.popLimit;
-        }
-    }
-
-    addToWood() {
-        // Arvutab uue puidu koguse
+    gameTick() {
+        // Arvutab uue populatsiooni ja kontrollib, kas populatsioon on ületanud limiidi
+        this.population = min(this.population * (1 + this.growthRate), this.popLimit);
+        // Arvutab teisi stat
         this.wood += this.woodRate;
-    }
-
-
-    addToKnowledge() {
-        // Arvutab uue knowledge koguse
         this.knowledge += this.knowledgeRate;
-    }
+        // Peaks lisama veel stat e
 
+        }
+    updateInfo() {
+
+    }
 
     upgradesFunction(upgradeName) {
         let upgrade = this.Upgrades[upgradeName];
         
     }
+}
+game = incrementalGame;
+async function startStopGame() {
+    document.getElementById('pop')
+    if (!game.gameRunning){var gameTicker = setInterval(game.gameTick, 1000);}
+    else {clearInterval(gameTicker);}
 }
