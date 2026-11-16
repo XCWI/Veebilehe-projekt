@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inimkonna Tõus | Mäng</title>
+    <link rel="stylesheet" href="../static/css/home.css">
+    <link rel="stylesheet" href="../static/css/game.css">
+</head>
+<body>
+    <section class="panel panel-actions upgrade-panel">
+        <h3 class="panel-title">Upgrades</h3>
+        <label class="upgrade-label" for="upgrade-category">Choose an upgrade category</label>
+        <select id="upgrade-category" class="upgrade-select" onchange="showUpgradeCategory(this.value)">
+            <option value="farming">Farming</option>
+            <option value="wood">Wood production</option>
+            <option value="mining">Mining</option>
+            <option value="education">Education / knowledge</option>
+        </select>
+        <div id="upgrade-list" class="upgrade-list" aria-live="polite"></div>
+    </section>
+    <div class="game-container">
+        <header class="game-header">
+            <a href="/" class="back-link">← Tagasi pealehele</a>
+            <button class="btn btn-start" onclick="start_game()">Alusta Mängu (Start Game)</button>
+        </header>
+
+        <main class="controls">
+            <section class="panel panel-stats">
+                <h3 class="panel-title">Statistika</h3>
+                <table class="stats">
+                    <tr><td class="stat-label">Population</td><td class="stat-value" id="population">1 000</td></tr>
+                    <tr><td class="stat-label">Food</td><td class="stat-value" id="food">0</td></tr>
+                    <tr><td class="stat-label">Wood</td><td class="stat-value" id="wood">0</td></tr>
+                    <tr><td class="stat-label">Knowledge</td><td class="stat-value" id="knowledge">0</td></tr>
+                    <tr><td class="stat-label">Population Cap</td><td class="stat-value" id="population_cap">50 000</td></tr>
+                </table>
+            </section>
+
+            <section class="panel panel-center">
+                <div class="earth_ascii" aria-label="Maa illustratsioon">
+                    <pre class="earth_ascii_text">
+               _-o#&&*''''?d:&gt;b\_
+          _o/"`''  '',, dMF9MMMMMHo_
+       .o&amp;#'        `"MbHMMMMMMMMMMMHo.
+     .o"" '         vodM*$&amp;&amp;HMMMMMMMMMM?.
+    ,'              $M&amp;ood,~'`(&amp;##MMMMMMH\
+   /               ,MMMMMMM#b?#bobMMMMHMMML
+  &amp;              ?MMMMMMMMMMMMMMMMM7MMM$R*Hk
+ ?$.            :MMMMMMMMMMMMMMMMMMM/HMMM|`*L
+|               |MMMMMMMMMMMMMMMMMMMMbMH'   T,
+$H#:            `*MMMMMMMMMMMMMMMMMMMMb#}'  `?
+]MMH#             ""*""""*#MMMMMMMMMMMMM'    -
+MMMMMb_                   |MMMMMMMMMMMP'     :
+HMMMMMMMHo                 `MMMMMMMMMT       .
+?MMMMMMMMP                  9MMMMMMMM}       -
+-?MMMMMMM                  |MMMMMMMMM?,d-    '
+ :|MMMMMM-                 `MMMMMMMT .M|.   :
+  .9MMM[                    &amp;MMMMM*' `'    .
+   :9MMk                    `MMM#"        -
+     &amp;M}                     `          .-
+      `&amp;.                             .
+        `~,   .                     ./
+            . _                  .-
+              '`--._,dd###pp=""'
+                    </pre>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const upgradeCategories = {
+            farming: ["Improved hoe", "Crop rotation", "Irrigation"],
+            wood: ["Better axes", "Managed forest", "Sawmill"],
+            mining: ["Stone tools", "Deep mining", "Ore processing"],
+            education: ["Learning hall", "Written records", "Research network"]
+        };
+
+        function showUpgradeCategory(category) {
+            const list = document.getElementById("upgrade-list");
+            list.replaceChildren();
+            for (const upgrade of upgradeCategories[category] || []) {
+                const item = document.createElement("div");
+                item.className = "upgrade-item";
+                const name = document.createElement("span");
+                name.textContent = upgrade;
+                const button = document.createElement("button");
+                button.className = "action-btn";
+                button.type = "button";
+                button.textContent = "+";
+                button.setAttribute("aria-label", `Upgrade ${upgrade}`);
+                item.append(name, button);
+                list.append(item);
+            }
+        }
+
+        async function start_game() {
+            try { await fetch("/start_game"); } catch (error) { /* Server may be unavailable in preview. */ }
+        }
+
+        showUpgradeCategory(document.getElementById("upgrade-category").value);
+    </script>
+    <script src="../mang.js"></script>
+</body>
+</html>

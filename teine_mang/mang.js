@@ -19,7 +19,7 @@ class incrementalGame {
                 "maxLevel": 4,
                 "initialCost": 20,
                 "costPerLevel": 1.4,
-                "initialUpgradeState": 4,
+                "initialUpgradePerk": 4,
                 "initialUpgradePerLevel": 1.2
             },
             "pickaxeUpgrade": {
