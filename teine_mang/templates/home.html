@@ -3,134 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inimkonna Tõus | Mäng</title>
-    <!-- Ühendus samas kaustas asuva home.css failiga -->
+    <title>Inimkonna Tõus | Pealeht</title>
     <link rel="stylesheet" href="../static/css/home.css">
-    <script>
-        // Taustapäringud Flaski jaoks (kui käivitad serveriga)
-        setInterval(get_data, 1000);
-        async function get_data() {
-            try {
-                const some_data = await fetch('/game_data', { method: 'POST' });
-                if (!some_data.ok) return;
-                const data = await some_data.json();
-                for (const item of data) {
-                    const el = document.getElementById(item.info);
-                    if (el) el.innerHTML = item.value;
-                }
-            } catch (e) {
-                // Brauseris otse faili vaadates ignoreerib võrguvigu
-            }
-        }
-        async function start_game() {
-            try { await fetch("/start_game"); } catch (e) {}
-        }
-        async function gather_food() {
-            try { 
-                await fetch("/gather_food"); 
-                // Kohalik demo-tagasiside juhuks, kui Flaski server pole taga
-                const foodEl = document.getElementById("food");
-                if (foodEl && (foodEl.innerText === "" || !isNaN(foodEl.innerText))) {
-                    foodEl.innerText = Number(foodEl.innerText || 0) + 50;
-                }
-            } catch (e) {}
-        }
-    </script>
-    <script src="js/earth_spin.js"></script>
 </head>
 <body>
-    <div class="game-container">
-        <!-- Ülemine riba tagasilingi ja mängu käivitamisega -->
-        <header class="game-header">
-            <a href="index.html" class="back-link">← Tagasi pealehele</a>
-            <button class="btn btn-start" onclick="start_game()">Alusta Mängu (Start Game)</button>
-        </header>
-
-        <!-- Põhiline mänguala: 3 tulpa (Statistika | Maa kera | Tegevused) -->
-        <main class="controls">
-            <!-- Vasak tulp: Statistika -->
-            <section class="panel panel-stats">
-                <h3 class="panel-title">Statistika</h3>
-                <table class="stats">
-                    <tr>
-                        <td class="stat-label">Population</td>
-                        <td class="stat-value" id="population">1 000</td>
-                    </tr>
-                    <tr>
-                        <td class="stat-label">Food</td>
-                        <td class="stat-value" id="food">0</td>
-                    </tr>
-                    <tr>
-                        <td class="stat-label">Population Cap</td>
-                        <td class="stat-value" id="population_cap">50 000</td>
-                    </tr>
-                </table>
-            </section>
-
-            <!-- Keskne tulp: Maa animatsioon -->
-            <section class="panel panel-center">
-                <div class="earth_ascii">
-                    <pre class="earth_ascii_text">
-               _-o#&&*''''?d:>b\_
-          _o/"`''  '',, dMF9MMMMMHo_
-       .o&#'        `"MbHMMMMMMMMMMMHo.
-     .o"" '         vodM*$&&HMMMMMMMMMM?.
-    ,'              $M&ood,~'`(&##MMMMMMH\
-   /               ,MMMMMMM#b?#bobMMMMHMMML
-  &              ?MMMMMMMMMMMMMMMMM7MMM$R*Hk
- ?$.            :MMMMMMMMMMMMMMMMMMM/HMMM|`*L
-|               |MMMMMMMMMMMMMMMMMMMMbMH'   T,
-$H#:            `*MMMMMMMMMMMMMMMMMMMMb#}'  `?
-]MMH#             ""*""""*#MMMMMMMMMMMMM'    -
-MMMMMb_                   |MMMMMMMMMMMP'     :
-HMMMMMMMHo                 `MMMMMMMMMT       .
-?MMMMMMMMP                  9MMMMMMMM}       -
--?MMMMMMM                  |MMMMMMMMM?,d-    '
- :|MMMMMM-                 `MMMMMMMT .M|.   :
-  .9MMM[                    &MMMMM*' `'    .
-   :9MMk                    `MMM#"        -
-     &M}                     `          .-
-      `&.                             .
-        `~,   .                     ./
-            . _                  .-
-              '`--._,dd###pp=""'
-                    </pre>
-                </div>
-            </section>
-
-            <!-- Parem tulp: Nupud ja tegevused -->
-            <section class="panel panel-actions">
-                <table class="buttons">
-                    <thead>
-                        <tr>
-                            <th colspan="2">Tegevused (Actions)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Gather food</td>
-                            <td><button class="action-btn" onclick="gather_food()">+</button></td>
-                        </tr>
-                        <tr>
-                            <td>Some other stuff</td>
-                            <td><button class="action-btn">+</button></td>
-                        </tr>
-                        <tr>
-                            <td>Other stuff</td>
-                            <td><button class="action-btn">+</button></td>
-                        </tr>
-                        <tr>
-                            <td>Other stuff</td>
-                            <td><button class="action-btn">+</button></td>
-                        </tr>
-                        <tr>
-                            <td>Other stuff</td>
-                            <td><button class="action-btn">+</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </main>
+    <div class="home-container">
+        <h1 class="home-title">Inimkonna Tõus</h1>
+        <p class="home-description">
+            Inkrementaalne simulaator inimkonna tekkest, ressursside tarbimisest ja uute mandrite asustamisest.
+        </p>
+        <a href="game.html" class="btn-start">
+            Sisene Mängu →
+        </a>
     </div>
 </body>
 </html>
