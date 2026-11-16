@@ -48,9 +48,27 @@ class incrementalGame {
 
     }
 
-    upgradesFunction(upgradeName) {
-        let upgrade = this.Upgrades[upgradeName];
-        
+    upgradeFunction(upgradeName) {
+        const upgrade = this.Upgrades[upgradeName];
+        // Kontrollib, kas upgrade on olemas  
+        if (!upgrade) {
+            return false;
+        }
+        // Kontrollib, kas upgrade on lubatud (kas upgrade'i tase on väiksem kui maksimaalne tase)
+        if (!upgrade || upgrade.level < upgrade.maxLevel) {
+                for (let resource in upgrade.initialCost) {
+                const cost = Math.ceil(
+                    upgrade.initialCost[resource] *
+                    upgrade.costPerLevel ** upgrade.level
+                    );
+                    // Kontrollib, kas mängijal on piisavalt ressursse upgrade'i ostmiseks,
+                    // kui ressursid on olemas, siis tagastab true, muidu false
+                    if ((this.Resources[resource] ?? 0) < cost) {
+                        return false;
+                    }
+            }
+                return true;
+        }         
     }
 }
 game = incrementalGame;
