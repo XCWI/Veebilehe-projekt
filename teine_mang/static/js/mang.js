@@ -22,13 +22,16 @@ class incrementalGame {
         this.Upgrades = {
             // peaks täpsustama mis ressursse on vaja, et teha upgrade
             "hoeUpgrade": {
+                "level": 0,
                 "maxLevel": 4,
                 "initialCost": 20,
                 "costPerLevel": 1.4,
                 "initialUpgradePerk": 4,
-                "initialUpgradePerLevel": 1.2
+                "initialUpgradePerLevel": 1.2,
+                "upgradeCostCategories": {"wood": 1.2, "food": 0.8}
             },
             "pickaxeUpgrade": {
+                "level": 0,
                 "maxLevel": 4,
                 "initialCost": 20,
                 "costPerLevel": 1.4,
@@ -56,15 +59,15 @@ class incrementalGame {
             return false;
         }
         // Kontrollib, kas upgrade on lubatud (kas upgrade'i tase on väiksem kui maksimaalne tase)
-        if (!upgrade || upgrade.level < upgrade.maxLevel) {
-                for (let resource in upgrade.initialCost) {
+        if (upgrade.level < upgrade.maxLevel) {
+                for (let resource of upgrade.upgradeCostCategories) {
                 const cost = Math.ceil(
-                    upgrade.initialCost[resource] *
-                    upgrade.costPerLevel ** upgrade.level
+                    upgrade.initialCost *
+                    (upgrade.costPerLevel ** (upgrade.level+1)) * upgrade.upgradeCostCategories.resource
                     );
                     // Kontrollib, kas mängijal on piisavalt ressursse upgrade'i ostmiseks,
                     // kui ressursid on olemas, siis tagastab true, muidu false
-                    if ((this.Resources[resource] ?? 0) < cost) {
+                    if (cost < this[resource]) {
                         return false;
                     }
             }
