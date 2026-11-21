@@ -19,26 +19,52 @@ class incrementalGame {
         this.food = 0;
         this.foodRate = 1;
 
+        this.stone = 0;
+        this.stoneRate = 1;
+
+
         this.Upgrades = {
-            // peaks täpsustama mis ressursse on vaja, et teha upgrade
-            "hoeUpgrade": {
-                "level": 0,
-                "maxLevel": 4,
-                "initialCost": 20,
-                "costPerLevel": 1.4,
-                "initialUpgradePerk": 4,
-                "initialUpgradePerLevel": 1.2,
-                "upgradeCostCategories": {"wood": 1.2, "food": 0.8}
+            hoeUpgrade: {
+                name: "Improved hoe",
+                category: "farming",
+                resource: "food",
+                level: 0,
+                maxLevel: 4,
+                initialCost: 20,
+                costPerLevel: 1.4,
+                initialBonus: 4,
+                bonusPerLevel: 1.2,
+                upgradeCostCategories: { wood: 1.2, food: 0.8 }
             },
-            "pickaxeUpgrade": {
-                "level": 0,
-                "maxLevel": 4,
-                "initialCost": 20,
-                "costPerLevel": 1.4,
-                "initialUpgradeState": 4,
-                "initialUpgradePerLevel": 1.2
+            pickaxeUpgrade: {
+                name: "Stone tools",
+                category: "mining",
+                resource: "knowledge",
+                level: 0,
+                maxLevel: 4,
+                initialCost: 20,
+                costPerLevel: 1.4,
+                initialBonus: 4,
+                bonusPerLevel: 1.2,
+                upgradeCostCategories: { wood: 1.2 }
+            },
+            betterAxes: {
+                name: "Better axes",
+                category: "wood",
+                resource: "wood",
+                level: 0,
+                maxLevel: 4,
+                initialCost: 20,
+                costPerLevel: 1.4,
+                initialBonus: 4,
+                bonusPerLevel: 1.2,
+                upgradeCostCategories: { wood: 1.2 }
             }
         };
+
+        this.gameStoryUpates = {
+            
+        }
     }
 
     gameTick() {   
@@ -48,39 +74,21 @@ class incrementalGame {
         this.wood += this.woodRate;
         this.knowledge += this.knowledgeRate;
         this.food += this.foodRate;
+        this.stone += this.stoneRate;
+
         // Peaks lisama veel stat e
         
         }
-
-    upgradeFunction(upgradeName) {
-        const upgrade = this.Upgrades[upgradeName];
-        // Kontrollib, kas upgrade on olemas  
-        if (!upgrade) {
-            return false;
-        }
-        // Kontrollib, kas upgrade on lubatud (kas upgrade'i tase on väiksem kui maksimaalne tase)
-        if (upgrade.level < upgrade.maxLevel) {
-                for (let resource of upgrade.upgradeCostCategories) {
-                const cost = Math.ceil(
-                    upgrade.initialCost *
-                    (upgrade.costPerLevel ** (upgrade.level+1)) * upgrade.upgradeCostCategories.resource
-                    );
-                    // Kontrollib, kas mängijal on piisavalt ressursse upgrade'i ostmiseks,
-                    // kui ressursid on olemas, siis tagastab true, muidu false
-                    if (cost < this[resource]) {
-                        return false;
-                    }
-            }
-                return true;
-        }         
-    }
 }
 const game = new incrementalGame;
 function updateInfo() {
     game.gameTick();
-    const statsList = document.getElementsByClassName('stat-value');
-    for(const i of statsList){
-        document.getElementById(i.id).textContent = Math.round(game[i.id]);
+    renderStats();
+}
+
+function renderStats() {
+    for (const stat of document.getElementsByClassName("stat-value")) {
+        stat.textContent = Math.round(game[stat.id]);
     }
 }
 let gameTicker = null;
@@ -88,4 +96,37 @@ async function startStopGame() {
     if (gameTicker == null){gameTicker = setInterval(updateInfo, 1000);}
     else {clearInterval(gameTicker);
         gameTicker=null;}
+}
+
+function getUpgradeCosts(upgrade) {
+    return Object.entries(upgrade.upgradeCostCategories || {}).map(
+        ([resource, multiplier]) => [
+            resource,
+            Math.ceil(upgrade.initialCost * (upgrade.costPerLevel ** upgrade.level) * multiplier)
+        ]
+    );
+}
+
+function upgradeFunction(upgradeId) {
+    const upgrade = game.Upgrades[upgradeId];
+    if (!upgrade || upgrade.level >= upgrade.maxLevel) return false;
+
+    const costs = getUpgradeCosts(upgrade);
+
+    // Check every resource first, so a failed purchase never partially charges the player.
+    if (costs.some(([resource, cost]) => !Number.isFinite(game[resource]) || game[resource] < cost)) {
+        return false;
+    }
+
+    for (const [resource, cost] of costs) {
+        game[resource] -= cost;
+    }
+
+    game[`${upgrade.resource}Rate`] += upgrade.initialBonus * (upgrade.bonusPerLevel ** upgrade.level);
+    upgrade.level += 1;
+
+    renderStats();
+    const category = document.getElementById("upgrade-category").value;
+    showUpgradeCategory(category);
+    return true;
 }
