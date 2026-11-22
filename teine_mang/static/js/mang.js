@@ -25,11 +25,87 @@ class incrementalGame {
         this.iron = 0;
         this.ironRate = 1;
 
+        this.unlockingUpgrades = {
+            Africa: {
+                name: "Africa",
+                category: "Continents",
+                unlocked: 1,
+                level: 0,
+                maxLevel: 1,
+                initialCost: 0,
+                costPerLevel: 1,
+                upgradeCostCategories: {},
+                unlockedUpgrades: [ "betterSaws", "Europe" ],
+                content: { title: "Africa", text: "Add your Africa story here.", image: "", imageAlt: "" },
+            },
+            Europe: {
+                name: "Europe",
+                category: "Continents",
+                unlocked: 0,
+                level: 0,
+                maxLevel: 1,
+                initialCost: 0,
+                costPerLevel: 1,
+                upgradeCostCategories: {},
+                unlockedUpgrades: [  ],
+                content: { title: "Europe", text: "Add your Europe story here.", image: "", imageAlt: "" },
+            },
+            Asia: {
+                name: "Asia",
+                category: "Continents",
+                unlocked: 0,
+                level: 0,
+                maxLevel: 1,
+                initialCost: 0,
+                costPerLevel: 1,
+                upgradeCostCategories: {},
+                unlockedUpgrades: [ "betterSaws" ],
+                content: { title: "Asia", text: "Add your Asia story here.", image: "", imageAlt: "" },
+            },
+            Australia: {
+                name: "Australia",
+                category: "Continents",
+                unlocked: 0,
+                level: 0,
+                maxLevel: 1,
+                initialCost: 0,
+                costPerLevel: 1,
+                upgradeCostCategories: {},
+                unlockedUpgrades: [ "betterSaws" ],
+                content: { title: "Australia", text: "Add your Australia story here.", image: "", imageAlt: "" },
+            },
+            Americas: {
+                name: "Americas",
+                category: "Continents",
+                unlocked: 0,
+                level: 0,
+                maxLevel: 1,
+                initialCost: 0,
+                costPerLevel: 1,
+                upgradeCostCategories: {},
+                unlockedUpgrades: [ "betterSaws" ],
+                content: { title: "Americas", text: "Add your Americas story here.", image: "", imageAlt: "" },
+            },
+            fire: {
+                name: "Fire",
+                category: "Nature",
+                unlocked: 1,
+                level: 0,
+                maxLevel: 1,
+                initialCost: 10,
+                costPerLevel: 1,
+                upgradeCostCategories: { knowledge: 4, wood: 1.2 },
+                unlockedUpgrades: [  ],
+                content: { title: "Fire", text: "Add your fire discovery here.", image: "", imageAlt: "" },
+            },
+        };
+
 
         this.Upgrades = {
             hoeUpgrade: {
                 name: "Improved hoe",
                 category: "farming",
+                unlocked: 0,
                 level: 0,
                 maxLevel: 4,
                 initialCost: 20,
@@ -42,6 +118,7 @@ class incrementalGame {
             pickaxeUpgrade: {
                 name: "Stone tools",
                 category: "mining",
+                unlocked: 0,
                 level: 0,
                 maxLevel: 4,
                 initialCost: 20,
@@ -54,6 +131,7 @@ class incrementalGame {
             betterAxes: {
                 name: "Better axes",
                 category: "wood",
+                unlocked: 0,
                 level: 0,
                 maxLevel: 20,
                 initialCost: 20,
@@ -66,6 +144,7 @@ class incrementalGame {
             betterSaws: {
                 name: "Better saws",
                 category: "wood",
+                unlocked: 0,
                 level: 0,
                 maxLevel: 4,
                 initialCost: 20,
@@ -73,11 +152,13 @@ class incrementalGame {
                 initialBonus: 1,
                 productionBonuses: { wood: 4, iron: 1 },
                 bonusPerLevel: 1.2,
-                upgradeCostCategories: { wood: 1.2 , iron: 2, knowledge: 4}
+                upgradeCostCategories: { wood: 1.2 , iron: 2, knowledge: 4},
+                content: { title: "Better saws", text: "Add your saws discovery here.", image: "", imageAlt: "" }
             },
             school: {
                 name: "School",
                 category: "knowledge",
+                unlocked: 0,
                 level: 0,
                 maxLevel: 4,
                 initialCost: 20,
@@ -168,8 +249,38 @@ function upgradeFunction(upgradeId) {
         }
     }
     upgrade.level += 1;
+    if (upgrade.content) upgrade.contentRevealed = true;
 
     renderStats();
+    renderUnlockedContent();
+    const category = document.getElementById("upgrade-category").value;
+    showUpgradeCategory(category);
+    return true;
+}
+
+function upgradeUnlockFunction(upgradeId) {
+    const upgrade = game.unlockingUpgrades[upgradeId];
+    if (!upgrade || upgrade.level >= upgrade.maxLevel) return false;
+
+    const costs = getUpgradeCosts(upgrade);
+
+    if (costs.some(([resource, cost]) => !Number.isFinite(game[resource]) || game[resource] < cost)) {
+        return false;
+    }
+
+    for (const [resource, cost] of costs) {
+        game[resource] -= cost;
+    }
+
+    for (const unlockedId of upgrade.unlockedUpgrades) {
+        if (game.Upgrades[unlockedId]) game.Upgrades[unlockedId].unlocked = 1;
+        else if (game.unlockingUpgrades[unlockedId]) game.unlockingUpgrades[unlockedId].unlocked = 1;
+    }
+    upgrade.level += 1;
+    if (upgrade.content) upgrade.contentRevealed = true;
+
+    renderStats();
+    renderUnlockedContent();
     const category = document.getElementById("upgrade-category").value;
     showUpgradeCategory(category);
     return true;
