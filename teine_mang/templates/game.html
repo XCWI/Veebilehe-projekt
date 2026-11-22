@@ -6,8 +6,23 @@
     <title>Rise of Humanity | Game</title>
     <!-- Ühendab game.css kujundusfaili -->
     <link rel="stylesheet" href="../static/css/game.css">
+    <style>
+        .unlocked-content-item {
+            transition: opacity 2.5s ease;
+        }
+
+        .unlocked-content-item.discovery-new {
+            animation: discovery-appear 1s ease both;
+        }
+
+        @keyframes discovery-appear {
+            from { opacity: 0; transform: translateY(-0.5rem); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
+<<<<<<< HEAD
 <<<<<<< HEAD
     <div class="game-layout">
         
@@ -29,6 +44,9 @@
                 <button class="tab-btn" onclick="switchTab('buildings', this)">BUILDINGS</button>
             </nav>
 =======
+=======
+    <script src="../static/js/mang.js"></script>
+>>>>>>> e0c8746 (Lisasin funtsiooni,  mis kuvab unlockUpgradede teksti ja tegin ka vastava loogika)
     <section class="panel panel-actions upgrade-panel">
         <h3 class="panel-title">Upgrades</h3>
         <label class="upgrade-label" for="upgrade-category">Choose an upgrade category</label>
@@ -37,8 +55,14 @@
             <option value="wood">Wood production</option>
             <option value="mining">Mining</option>
             <option value="education">Education / knowledge</option>
+            <option value="continents">Continents</option>
+            <option value="nature">Nature</option>
         </select>
         <div id="upgrade-list" class="upgrade-list" aria-live="polite"></div>
+    </section>
+    <section id="unlocked-content" class="unlocked-content" aria-live="polite" hidden>
+        <h2>Discoveries</h2>
+        <div id="unlocked-content-list" class="unlocked-content-list"></div>
     </section>
     <div class="game-container">
         <header class="game-header">
@@ -228,7 +252,11 @@
     </script>
 =======
     <script src="../static/js/game_upgade_list_logic.js"></script>
+<<<<<<< HEAD
 >>>>>>> 6924e5c (start_stop mehaanika)
     <script src="../static/js/mang.js"></script>
+=======
+    <script src="../static/js/game_unlock_list_logic.js"></script>
+>>>>>>> e0c8746 (Lisasin funtsiooni,  mis kuvab unlockUpgradede teksti ja tegin ka vastava loogika)
 </body>
 </html>

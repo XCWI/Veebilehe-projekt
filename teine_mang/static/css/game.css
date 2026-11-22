@@ -245,8 +245,48 @@ body {
     font-size: 0.9rem;
 }
 
+<<<<<<< HEAD
 .stat-label {
     color: var(--text-secondary);
+=======
+.unlocked-content {
+    width: min(100%, 1100px);
+    margin: 1.5rem auto;
+    padding: 1.25rem;
+    color: var(--text-primary);
+    background: rgba(20, 23, 36, 0.92);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.unlocked-content h2,
+.unlocked-content-item h3 {
+    margin-top: 0;
+}
+
+.unlocked-content-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.unlocked-content-item {
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.unlocked-content-item img {
+    display: block;
+    max-width: 100%;
+    max-height: 28rem;
+    object-fit: contain;
+    margin: 0.75rem 0;
+}
+
+@media (max-width: 900px) {
+    body { align-items: flex-start; }
+    .controls { grid-template-columns: 1fr 1fr; }
+    .panel-center { grid-column: 1 / -1; grid-row: 1; }
+>>>>>>> e0c8746 (Lisasin funtsiooni,  mis kuvab unlockUpgradede teksti ja tegin ka vastava loogika)
 }
 
 .stat-value {
