@@ -22,48 +22,75 @@ class incrementalGame {
         this.stone = 0;
         this.stoneRate = 1;
 
+        this.iron = 0;
+        this.ironRate = 1;
+
 
         this.Upgrades = {
             hoeUpgrade: {
                 name: "Improved hoe",
                 category: "farming",
-                resource: "food",
                 level: 0,
                 maxLevel: 4,
                 initialCost: 20,
                 costPerLevel: 1.4,
-                initialBonus: 4,
+                initialBonus: 1,
+                productionBonuses: { food: 4 },
                 bonusPerLevel: 1.2,
                 upgradeCostCategories: { wood: 1.2, food: 0.8 }
             },
             pickaxeUpgrade: {
                 name: "Stone tools",
                 category: "mining",
-                resource: "knowledge",
                 level: 0,
                 maxLevel: 4,
                 initialCost: 20,
                 costPerLevel: 1.4,
-                initialBonus: 4,
+                initialBonus: 1,
+                productionBonuses: { knowledge: 4, iron: 2 },
                 bonusPerLevel: 1.2,
                 upgradeCostCategories: { wood: 1.2 }
             },
             betterAxes: {
                 name: "Better axes",
                 category: "wood",
-                resource: "wood",
+                level: 0,
+                maxLevel: 20,
+                initialCost: 20,
+                costPerLevel: 4.5,
+                initialBonus: 1,
+                productionBonuses: { wood: 4 },
+                bonusPerLevel: 1.2,
+                upgradeCostCategories: { wood: 1.2, knowledge: 4 }
+            },
+            betterSaws: {
+                name: "Better saws",
+                category: "wood",
                 level: 0,
                 maxLevel: 4,
                 initialCost: 20,
                 costPerLevel: 1.4,
-                initialBonus: 4,
+                initialBonus: 1,
+                productionBonuses: { wood: 4, iron: 1 },
                 bonusPerLevel: 1.2,
-                upgradeCostCategories: { wood: 1.2 }
+                upgradeCostCategories: { wood: 1.2 , iron: 2, knowledge: 4}
+            },
+            school: {
+                name: "School",
+                category: "knowledge",
+                level: 0,
+                maxLevel: 4,
+                initialCost: 20,
+                costPerLevel: 1.4,
+                initialBonus: 1,
+                productionBonuses: { knowledge: 4 },
+                bonusPerLevel: 1.2,
+                upgradeCostCategories: { wood: 1.2 , stone: 2, knowledge: 2}
             }
         };
 
         this.gameStoryUpates = {
-            
+
         }
     }
 
@@ -75,6 +102,7 @@ class incrementalGame {
         this.knowledge += this.knowledgeRate;
         this.food += this.foodRate;
         this.stone += this.stoneRate;
+        this.iron += this.ironRate;
 
         // Peaks lisama veel stat e
         
@@ -107,13 +135,22 @@ function getUpgradeCosts(upgrade) {
     );
 }
 
+function getUpgradeBonus(upgrade) {
+    return Object.entries(upgrade.productionBonuses || {}).map(
+        ([resource, multiplier]) => [
+            resource,
+            Math.floor(upgrade.initialBonus * (upgrade.bonusPerLevel ** upgrade.level) * multiplier)
+        ]
+    );
+}
+
 function upgradeFunction(upgradeId) {
     const upgrade = game.Upgrades[upgradeId];
     if (!upgrade || upgrade.level >= upgrade.maxLevel) return false;
 
     const costs = getUpgradeCosts(upgrade);
 
-    // Check every resource first, so a failed purchase never partially charges the player.
+    // Returnib false, kui game[resource] ei ole normaalne number või kui game[resource] on vaiksem, kui upgrade maksab.
     if (costs.some(([resource, cost]) => !Number.isFinite(game[resource]) || game[resource] < cost)) {
         return false;
     }
@@ -122,7 +159,14 @@ function upgradeFunction(upgradeId) {
         game[resource] -= cost;
     }
 
-    game[`${upgrade.resource}Rate`] += upgrade.initialBonus * (upgrade.bonusPerLevel ** upgrade.level);
+    const bonuses = getUpgradeBonus(upgrade);
+
+    for (const [resource, bonus] of bonuses) {
+        const rateKey = `${resource}Rate`;
+        if (Number.isFinite(game[rateKey])) {
+            game[rateKey] += bonus;
+        }
+    }
     upgrade.level += 1;
 
     renderStats();
