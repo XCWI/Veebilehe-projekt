@@ -1,11 +1,13 @@
+// Tuleb synida mang.js upgrade listi pohjal
 const upgradeCategories = {
     farming: ["hoeUpgrade"],
-    wood: ["betterAxes"],
+    wood: ["betterAxes", "betterSaws"],
     mining: ["pickaxeUpgrade"],
-    education: []
+    education: ["school"]
 };
 
 function showUpgradeCategory(category) {
+    // Kustutab vana listi
     const list = document.getElementById("upgrade-list");
     list.replaceChildren();
 
@@ -24,6 +26,12 @@ function showUpgradeCategory(category) {
             ? "Max level"
             : `Cost: ${getUpgradeCosts(upgrade).map(([resource, amount]) => `${amount} ${resource}`).join(", ")}`;
 
+        const upgradeBonus = document.createElement("span");
+        upgradeBonus.className = "upgrade-bonus";
+        upgradeBonus.textContent = upgrade.level >= upgrade.maxLevel
+            ? "Max level"
+            : `Bonus: ${getUpgradeBonus(upgrade).map(([resource, amount]) => `${amount} ${resource}`).join(", ")}`;
+
         const button = document.createElement("button");
         button.className = "action-btn";
         button.type = "button";
@@ -32,7 +40,7 @@ function showUpgradeCategory(category) {
         button.disabled = upgrade.level >= upgrade.maxLevel;
         button.setAttribute("aria-label", `Upgrade ${upgrade.name}`);
 
-        item.append(name, cost, button);
+        item.append(name, cost, upgradeBonus, button);
         list.append(item);
     }
 }
