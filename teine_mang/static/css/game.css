@@ -4,6 +4,8 @@
     --panel-bg: #141724;
     --card-bg: #1a1d2e;
     --accent-green: #02c602;
+    --accent-red: red;
+    --accent-blue: rgb(75, 6, 107);
     --text-primary: #f3f4f6;
     --text-secondary: #9ca3af;
     --border-color: #2e344e;
@@ -83,8 +85,8 @@ body {
 
 .action-btn {
     background-color: transparent;
-    color: var(--accent-green);
-    border: 1px solid var(--accent-green);
+    color: var(--accent-red);
+    border: 1px solid var(--accent-red);
     padding: 0.5rem 0.9rem;
     border-radius: 4px;
     font-weight: bold;
@@ -92,14 +94,30 @@ body {
 }
 
 .action-btn:hover {
-    background-color: var(--accent-green);
+    background-color: var(--accent-red);
     color: #0b130b;
+}
+
+.action-btn:disabled {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+.action-btn.affordable {
+    color: var(--accent-green);
+    border-color: var(--accent-green);
+}
+.action-btn.action-btn.affordable:hover {
+    background-color: var(--accent-green);
+}
+.action-btn:disabled:hover {
+    background-color: var(--accent-blue);
 }
 
 /* Kategooriate riba (2 vahekaarti) */
 .category-tabs {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     background: var(--card-bg);
     border-bottom: 2px solid var(--border-color);
 }
@@ -109,9 +127,10 @@ body {
     color: var(--text-secondary);
     border: none;
     border-right: 1px solid var(--border-color);
-    padding: 0.85rem;
+    padding: 0.65rem;
     font-family: var(--font-mono);
     font-weight: bold;
+    font-size: 15px;
     cursor: pointer;
 }
 
@@ -187,7 +206,7 @@ body {
 
 /* Alumine Story kast */
 .story-box {
-    height: 160px;
+    height: 500px;
     background: var(--panel-bg);
     border-top: 2px solid var(--border-color);
     padding: 1rem 1.5rem;
@@ -245,10 +264,6 @@ body {
     font-size: 0.9rem;
 }
 
-<<<<<<< HEAD
-.stat-label {
-    color: var(--text-secondary);
-=======
 .unlocked-content {
     width: min(100%, 1100px);
     margin: 1.5rem auto;
@@ -286,7 +301,6 @@ body {
     body { align-items: flex-start; }
     .controls { grid-template-columns: 1fr 1fr; }
     .panel-center { grid-column: 1 / -1; grid-row: 1; }
->>>>>>> e0c8746 (Lisasin funtsiooni,  mis kuvab unlockUpgradede teksti ja tegin ka vastava loogika)
 }
 
 .stat-value {

@@ -25,10 +25,12 @@ class incrementalGame {
         this.iron = 0;
         this.ironRate = 1;
 
+        this.discoveredContinents = [];
+
         this.unlockingUpgrades = {
             Africa: {
                 name: "Africa",
-                category: "Continents",
+                category: "continent",
                 unlocked: 1,
                 level: 0,
                 maxLevel: 1,
@@ -40,7 +42,7 @@ class incrementalGame {
             },
             Europe: {
                 name: "Europe",
-                category: "Continents",
+                category: "continent",
                 unlocked: 0,
                 level: 0,
                 maxLevel: 1,
@@ -52,7 +54,7 @@ class incrementalGame {
             },
             Asia: {
                 name: "Asia",
-                category: "Continents",
+                category: "continent",
                 unlocked: 0,
                 level: 0,
                 maxLevel: 1,
@@ -64,7 +66,7 @@ class incrementalGame {
             },
             Australia: {
                 name: "Australia",
-                category: "Continents",
+                category: "continent",
                 unlocked: 0,
                 level: 0,
                 maxLevel: 1,
@@ -76,7 +78,7 @@ class incrementalGame {
             },
             Americas: {
                 name: "Americas",
-                category: "Continents",
+                category: "continent",
                 unlocked: 0,
                 level: 0,
                 maxLevel: 1,
@@ -88,7 +90,7 @@ class incrementalGame {
             },
             fire: {
                 name: "Fire",
-                category: "Nature",
+                category: "nature",
                 unlocked: 1,
                 level: 0,
                 maxLevel: 1,
@@ -193,6 +195,9 @@ const game = new incrementalGame;
 function updateInfo() {
     game.gameTick();
     renderStats();
+    if (typeof refreshUpgradeAffordability === "function") {
+        refreshUpgradeAffordability();
+    }
 }
 
 function renderStats() {
@@ -202,9 +207,10 @@ function renderStats() {
 }
 let gameTicker = null;
 async function startStopGame() {
-    if (gameTicker == null){gameTicker = setInterval(updateInfo, 1000);}
-    else {clearInterval(gameTicker);
-        gameTicker=null;}
+    if (gameTicker !== null) return;
+    gameTicker = setInterval(updateInfo, 1000);
+    const startButton = document.getElementById("start_btn");
+    if (startButton) startButton.remove();
 }
 
 function getUpgradeCosts(upgrade) {
@@ -214,6 +220,10 @@ function getUpgradeCosts(upgrade) {
             Math.ceil(upgrade.initialCost * (upgrade.costPerLevel ** upgrade.level) * multiplier)
         ]
     );
+}
+
+function isEnoughResource(costs) {
+    return costs.every(([resource, cost]) => Number.isFinite(game[resource]) && game[resource] >= cost);
 }
 
 function getUpgradeBonus(upgrade) {
@@ -230,11 +240,7 @@ function upgradeFunction(upgradeId) {
     if (!upgrade || upgrade.level >= upgrade.maxLevel) return false;
 
     const costs = getUpgradeCosts(upgrade);
-
-    // Returnib false, kui game[resource] ei ole normaalne number või kui game[resource] on vaiksem, kui upgrade maksab.
-    if (costs.some(([resource, cost]) => !Number.isFinite(game[resource]) || game[resource] < cost)) {
-        return false;
-    }
+    if (!isEnoughResource(costs)) return false;
 
     for (const [resource, cost] of costs) {
         game[resource] -= cost;
@@ -265,9 +271,7 @@ function upgradeUnlockFunction(upgradeId) {
 
     const costs = getUpgradeCosts(upgrade);
 
-    if (costs.some(([resource, cost]) => !Number.isFinite(game[resource]) || game[resource] < cost)) {
-        return false;
-    }
+    if (!isEnoughResource(costs)) return false;
 
     for (const [resource, cost] of costs) {
         game[resource] -= cost;
@@ -278,6 +282,12 @@ function upgradeUnlockFunction(upgradeId) {
         else if (game.unlockingUpgrades[unlockedId]) game.unlockingUpgrades[unlockedId].unlocked = 1;
     }
     upgrade.level += 1;
+    if (upgrade.category?.toLowerCase() === "continent") {
+        if (!game.discoveredContinents.includes(upgrade.name)) {
+            game.discoveredContinents.push(upgrade.name);
+        }
+        renderDiscoveredContinents();
+    }
     if (upgrade.content) upgrade.contentRevealed = true;
 
     renderStats();
@@ -287,3 +297,11 @@ function upgradeUnlockFunction(upgradeId) {
     }
     return true;
 }
+
+function renderDiscoveredContinents() {
+    const display = document.getElementById("discoveredContinents");
+    if (!display) return;
+    display.textContent = game.discoveredContinents.join(", ") || "None";
+}
+
+document.addEventListener("DOMContentLoaded", renderDiscoveredContinents);

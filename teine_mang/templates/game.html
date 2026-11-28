@@ -22,8 +22,6 @@
     </style>
 </head>
 <body>
-<<<<<<< HEAD
-<<<<<<< HEAD
     <div class="game-layout">
         
         <!-- VASAK POOL: Päis, kategooriad, kastid ja alumine story-logi -->
@@ -33,21 +31,11 @@
             <header class="top-bar">
                 <a href="home.html" class="back-link">← Back to Home</a>
                 <div class="quick-actions">
-<<<<<<< HEAD
-                    <button class="action-btn" onclick="gather_food()">+ Gather Food</button>
-                    <button id="start_btn" class="btn-start" onclick="start_game()">Start Game</button>
-=======
                     <button id="start_btn" class="btn-start" onclick="startStopGame()">Start Game</button>
->>>>>>> add8234 (Fixed problems with merge)
                 </div>
             </header>
-
             <!-- Kategooriate riba (ainult game_data.txt asjad: Food/Farming ja Buildings) -->
             <nav class="category-tabs">
-<<<<<<< HEAD
-                <button class="tab-btn active" onclick="switchTab('farming', this)">FARMING</button>
-                <button class="tab-btn" onclick="switchTab('buildings', this)">BUILDINGS</button>
-=======
                 <button class="tab-btn active" onclick="showUpgradeCategory('farming')">FARMING</button>
                 <button class="tab-btn" onclick="showUpgradeCategory('buildings')">BUILDINGS</button>
                 <button class="tab-btn" onclick="showUpgradeCategory('wood')">Wood production</button>
@@ -55,49 +43,7 @@
                 <button class="tab-btn" onclick="showUpgradeCategory('knowledge')">Education / knowledge</button>
                 <button class="tab-btn" onclick="showUpgradeCategory('nature')">Nature</button>
                 <button class="tab-btn" onclick="showUpgradeCategory('continents')">Continents</button>
->>>>>>> add8234 (Fixed problems with merge)
             </nav>
-=======
-=======
-    <script src="../static/js/mang.js"></script>
->>>>>>> e0c8746 (Lisasin funtsiooni,  mis kuvab unlockUpgradede teksti ja tegin ka vastava loogika)
-    <section class="panel panel-actions upgrade-panel">
-        <h3 class="panel-title">Upgrades</h3>
-        <label class="upgrade-label" for="upgrade-category">Choose an upgrade category</label>
-        <select id="upgrade-category" class="upgrade-select" onchange="showUpgradeCategory(this.value)">
-            <option value="farming" >Farming</option>
-            <option value="wood">Wood production</option>
-            <option value="mining">Mining</option>
-            <option value="education">Education / knowledge</option>
-            <option value="continents">Continents</option>
-            <option value="nature">Nature</option>
-        </select>
-        <div id="upgrade-list" class="upgrade-list" aria-live="polite"></div>
-    </section>
-    <section id="unlocked-content" class="unlocked-content" aria-live="polite" hidden>
-        <h2>Discoveries</h2>
-        <div id="unlocked-content-list" class="unlocked-content-list"></div>
-    </section>
-    <div class="game-container">
-        <header class="game-header">
-            <a href="/" class="back-link">← Tagasi pealehele</a>
-            <button class="btn btn-start" onclick="startStopGame()">Start/Stop Game</button>
-        </header>
-
-        <main class="controls">
-            <section class="panel panel-stats">
-                <h3 class="panel-title">Statistika</h3>
-                <table class="stats">
-                    <tr><td class="stat-label" id="population-stat">Population</td><td class="stat-value" id="population">1 000</td></tr>
-                    <tr><td class="stat-label" id="food-stat">Food</td><td class="stat-value" id="food">0</td></tr>
-                    <tr><td class="stat-label" id="wood-stat">Wood</td><td class="stat-value" id="wood">0</td></tr>
-                    <tr><td class="stat-label" id="population-cap-stat">Stone</td><td class="stat-value" id="stone">0</td></tr>
-                    <tr><td class="stat-label" id="iron-stat">Iron</td><td class="stat-value" id="iron">0</td></tr>
-                    <tr><td class="stat-label" id="kowledge-stat">Knowledge</td><td class="stat-value" id="knowledge">0</td></tr>
-                    <tr><td class="stat-label" id="population-cap-stat">Population Cap</td><td class="stat-value" id="populationCap">50 000</td></tr>
-                </table>
-            </section>
->>>>>>> 6924e5c (start_stop mehaanika)
 
             <!-- Keskmine ala: Uuenduste kastid -->
             <main class="upgrades-workspace">
@@ -111,7 +57,6 @@
                     <p class="story-entry">› Press "Start Game" to begin...</p>
                 </div>
             </section>
-<<<<<<< HEAD
         </div>
 
         <!-- PAREM POOL: STATS (täpselt game_data.txt väljad) -->
@@ -120,163 +65,26 @@
                 <h2 class="panel-title">STATS</h2>
                 <table class="stats-table">
                     <tr><td class="stat-label">Population</td><td class="stat-value" id="population">0</td></tr>
-                    <tr><td class="stat-label">Population Cap</td><td class="stat-value" id="population_cap">0</td></tr>
-                    <tr><td class="stat-label">Growth Rate</td><td class="stat-value" id="population_growth_rate">0</td></tr>
+                    <tr><td class="stat-label">Population Cap</td><td class="stat-value" id="populationCap">0</td></tr>
+                    <tr><td class="stat-label">Growth Rate</td><td class="stat-value" id="growthRate">0</td></tr>
                     <tr><td class="stat-label">Food</td><td class="stat-value" id="food">0</td></tr>
-                    <tr><td class="stat-label">Houses</td><td class="stat-value" id="houses">0</td></tr>
-                    <tr><td class="stat-label">Factories</td><td class="stat-value" id="factories">0</td></tr>
-                    <tr><td class="stat-label">Wheat</td><td class="stat-value" id="wheat">0</td></tr>
-                    <tr><td class="stat-label">Sheep</td><td class="stat-value" id="sheep">0</td></tr>
+                    <tr><td class="stat-label">stone</td><td class="stat-value" id="stone">0</td></tr>
+                    <tr><td class="stat-label">wood</td><td class="stat-value" id="wood">0</td></tr>
+                    <tr><td class="stat-label">iron</td><td class="stat-value" id="iron">0</td></tr>
+                    <tr><td class="stat-label">Knowledge</td><td class="stat-value" id="knowledge">0</td></tr>
+
                 </table>
 
                 <div class="continent-info">
-                    <div><strong>Discovered Worlds:</strong> <span id="discovered_worlds">-</span></div>
-                    <div><strong>Discover Next:</strong> <span id="discover_next">-</span></div>
+                    <div><strong>Discovered Continents:</strong> <span id="discoveredContinents">None</span></div>
                 </div>
             </section>
-        </aside>
-=======
+
         </main>
->>>>>>> 17890c3 (yritan updateinfot teha)
+
     </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-    <script>
-        let gameStarted = false;
-        let activeCategory = "farming";
-
-        // Ainult need 4 asja, mis on game_data.txt failis (wheat, sheep, houses, factories)
-        const itemsByCategory = {
-            farming: [
-                { id: "wheat", name: "WHEAT", lvl: 0, cost: 50, desc: "Planted wheat fields to produce more food." },
-                { id: "sheep", name: "SHEEP", lvl: 0, cost: 100, desc: "Domesticated sheep for a steady food supply." }
-            ],
-            buildings: [
-                { id: "houses", name: "HOUSES", lvl: 0, cost: 150, desc: "Built new houses to increase population cap." },
-                { id: "factories", name: "FACTORIES", lvl: 0, cost: 300, desc: "Built factories to boost production." }
-            ]
-        };
-
-        // Lisab rea alumisse story-kasti
-        function addStoryMessage(text) {
-            const log = document.getElementById("story-log");
-            const entry = document.createElement("p");
-            entry.className = "story-entry";
-            entry.textContent = "› " + text;
-            log.prepend(entry);
-        }
-
-        // Vahetab üleval kategooriat
-        function switchTab(category, btnElement) {
-            activeCategory = category;
-            document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
-            if (btnElement) btnElement.classList.add("active");
-            renderCards();
-        }
-
-        // Joonistab kastid keskmisele alale
-        function renderCards() {
-            const grid = document.getElementById("upgrades-grid");
-            grid.innerHTML = "";
-            const items = itemsByCategory[activeCategory] || [];
-
-            for (const item of items) {
-                const card = document.createElement("div");
-                card.className = "upgrade-card";
-                card.innerHTML = `
-                    <div class="card-top">
-                        <button class="item-buy-btn" onclick="buyItem('${item.id}')">
-                            ${item.name}
-                        </button>
-                        <span class="item-lvl">LVL: <strong>${item.lvl}</strong></span>
-                    </div>
-                    <div class="card-bottom">
-                        COST: <span>${item.cost} Food</span>
-                    </div>
-                `;
-                grid.appendChild(card);
-            }
-        }
-
-        // Eseme ostmine (suurendab LVL-i ja uuendab paremal STATS tabelit)
-        function buyItem(itemId) {
-            if (!gameStarted) {
-                addStoryMessage("Press 'Start Game' first!");
-                return;
-            }
-
-            const foodEl = document.getElementById("food");
-            let currentFood = Number(foodEl.innerText);
-
-            for (const cat in itemsByCategory) {
-                const item = itemsByCategory[cat].find(i => i.id === itemId);
-                if (item) {
-                    if (currentFood < item.cost) {
-                        addStoryMessage(`Not enough food to buy ${item.name} (Need ${item.cost} Food).`);
-                        return;
-                    }
-                    // Lahutab toidu, tõstab taset ja uuendab STATS tabelit
-                    foodEl.innerText = currentFood - item.cost;
-                    item.lvl++;
-                    document.getElementById(item.id).innerText = item.lvl;
-                    renderCards();
-                    addStoryMessage(`${item.name} upgraded to LVL ${item.lvl}. ${item.desc}`);
-                }
-            }
-        }
-
-        // Seab "Start Game" vajutamisel game_data.txt algväärtused
-        async function start_game() {
-            if (!gameStarted) {
-                gameStarted = true;
-                document.getElementById("population").innerText = "9905.0";
-                document.getElementById("population_cap").innerText = "10000";
-                document.getElementById("population_growth_rate").innerText = "0.01";
-                document.getElementById("food").innerText = "1000";
-                document.getElementById("houses").innerText = "0";
-                document.getElementById("factories").innerText = "0";
-                document.getElementById("wheat").innerText = "0";
-                document.getElementById("sheep").innerText = "0";
-                document.getElementById("discovered_worlds").innerText = "Africa";
-                document.getElementById("discover_next").innerText = "Europe";
-
-                const btn = document.getElementById("start_btn");
-                btn.innerText = "Game Running";
-                btn.disabled = true;
-
-                document.getElementById("story-log").innerHTML = "";
-                addStoryMessage("Game started in Africa. Next goal: Europe.");
-            }
-            try { await fetch("/start_game"); } catch (e) {}
-        }
-
-        // Toidu kogumine
-        async function gather_food() {
-            if (!gameStarted) {
-                addStoryMessage("Press 'Start Game' first!");
-                return;
-            }
-            const foodEl = document.getElementById("food");
-            foodEl.innerText = Number(foodEl.innerText) + 50;
-            addStoryMessage("Gathered +50 Food.");
-            try { await fetch("/gather_food"); } catch (e) {}
-        }
-
-        renderCards();
-    </script>
-=======
-    <script src="../static/js/game_upgade_list_logic.js"></script>
-<<<<<<< HEAD
->>>>>>> 6924e5c (start_stop mehaanika)
-    <script src="../static/js/mang.js"></script>
-=======
-    <script src="../static/js/game_unlock_list_logic.js"></script>
->>>>>>> e0c8746 (Lisasin funtsiooni,  mis kuvab unlockUpgradede teksti ja tegin ka vastava loogika)
-=======
     <script src="../static/js/mang.js"></script>
     <script src="../static/js/game_unlock_list_logic.js"></script>
     <script src="../static/js/game_upgade_list_logic.js"></script>
->>>>>>> add8234 (Fixed problems with merge)
 </body>
 </html>
