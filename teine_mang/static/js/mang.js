@@ -7,9 +7,22 @@ class incrementalGame {
         this.gameRunning = 1;
         
         this.population = 9905.0; // Algne populatsioon
-        this.growthRate =  0.1; // Kasvu määr (1%)
+        this.growthRate =  0.1; // Kasvu määr (10%)
         this.populationCap = 1000000; // Maksimaale populatsioon
-    
+
+        this.world = {
+            'Africa': [0, {'food': 1000, 'population_cap': 1000000}], 
+            'Europe': [10000, {'food': 500, 'population_cap': 2000000}], 
+            'Asia': [50000, {'food': 500, 'population_cap': 2000000}], 
+            'Oceania': [100000, {'food': 500, 'population_cap': 2000000}], 
+            'North-America': [1000000, {'food': 500, 'population_cap': 2000000}], 
+            'South-America':[ 1500000, {'food': 0, 'population_cap': 0}], 
+            'North Pole': [20000000, {'food': 0, 'population_cap': 0}],
+            'Antarctica': [100000000, {'food': 0, 'population_cap': 0}]
+    }
+        this.continents = ['Africa', 'Europe', 'Asia', 'Oceania', 'North-America', 'South-America', 'North Pole', 'Antarctica']
+        this.discoveredContintns = ['Africa']
+
         this.wood = 2;
         this.woodRate = 1;
 
@@ -173,4 +186,39 @@ function upgradeFunction(upgradeId) {
     const category = document.getElementById("upgrade-category").value;
     showUpgradeCategory(category);
     return true;
+}
+
+function showDiscoveryPopup(world, discoveredContinent) {
+    const bonuses = world[discoveredContinent][1];
+
+    document.getElementById("discoveryTitle").textContent =
+        `${discoveredContinent} has been discovered!`;
+
+    document.getElementById("discoveryDescription").textContent =
+        `Our explorers have discovered ${discoveredContinent}.`;
+
+    const bonusList = document.getElementById("discoveryBonuses");
+
+    bonusList.innerHTML = "";
+
+    for (const resource in bonuses) {
+        const amount = bonuses[resource];
+
+        const item = document.createElement("li");
+
+        item.textContent = `+${amount.toLocaleString("en-US")} ${resource}`;
+
+        bonusList.appendChild(item);
+    }
+
+    document.getElementById("discoveryPopup").hidden = false;
+}
+
+function ifContinentDiscovered(params) {
+    /* kontrollime, kas uus kontinent on avastatud
+       Kui uut kontinenti pole avastatud return ' '
+       Kui uus kontinent on avastatud lisame kontinendi avastatud kontinentide listi ja kuvame popupi
+       assert kontinent_discovered() == False
+       return avastatud kontinendi nimi stringina
+    */
 }
