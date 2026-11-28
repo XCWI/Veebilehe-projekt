@@ -20,8 +20,9 @@ class incrementalGame {
             'North Pole': [20000000, {'food': 0, 'population_cap': 0}],
             'Antarctica': [100000000, {'food': 0, 'population_cap': 0}]
     }
+
         this.continents = ['Africa', 'Europe', 'Asia', 'Oceania', 'North-America', 'South-America', 'North Pole', 'Antarctica']
-        this.discoveredContintns = ['Africa']
+        this.discoveredContinents = new Set(["Africa"]); // selleks, et kontinendi boonused rakenduksid ainult korra
 
         this.wood = 2;
         this.woodRate = 1;
@@ -189,19 +190,19 @@ function upgradeFunction(upgradeId) {
 }
 
 function showDiscoveryPopup(world, discoveredContinent) {
-    const bonuses = world[discoveredContinent][1];
+    const bonuses = world[discoveredContinent][1]; // võtame kontinentide boonused
 
-    document.getElementById("discoveryTitle").textContent =
+    document.getElementById("discoveryTitle").textContent = // popupi pealkiri
         `${discoveredContinent} has been discovered!`;
 
-    document.getElementById("discoveryDescription").textContent =
+    document.getElementById("discoveryDescription").textContent = // popupi kirjeldus
         `Our explorers have discovered ${discoveredContinent}.`;
 
-    const bonusList = document.getElementById("discoveryBonuses");
+    const bonusList = document.getElementById("discoveryBonuses"); // Salvestab HTML elemendi viite
 
-    bonusList.innerHTML = "";
+    bonusList.innerHTML = ""; // eemaldame vanemad boonused
 
-    for (const resource in bonuses) {
+    for (const resource in bonuses) { // Näitame popupil boonuseid
         const amount = bonuses[resource];
 
         const item = document.createElement("li");
