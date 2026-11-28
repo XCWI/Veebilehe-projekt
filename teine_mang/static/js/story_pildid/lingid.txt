@@ -1,0 +1,7 @@
+sawmills:
+1. samill.png https://arthive.com/ru/artists/12626~Fogelera/works/467963~Lesopil'nyj_zavod
+2. alternete_sawmill.png https://www.dreamstime.com/rustic-sawmill-scene-woodcutter-works-amidst-stacked-logs-image-depicts-showing-working-near-pile-large-outside-old-image392921421
+
+axes:
+1. axe.png https://dragoart.com/tut/how-to-draw-an-axe-19765
+2. alternete_axe.png
