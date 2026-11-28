@@ -33,15 +33,29 @@
             <header class="top-bar">
                 <a href="home.html" class="back-link">← Back to Home</a>
                 <div class="quick-actions">
+<<<<<<< HEAD
                     <button class="action-btn" onclick="gather_food()">+ Gather Food</button>
                     <button id="start_btn" class="btn-start" onclick="start_game()">Start Game</button>
+=======
+                    <button id="start_btn" class="btn-start" onclick="startStopGame()">Start Game</button>
+>>>>>>> add8234 (Fixed problems with merge)
                 </div>
             </header>
 
             <!-- Kategooriate riba (ainult game_data.txt asjad: Food/Farming ja Buildings) -->
             <nav class="category-tabs">
+<<<<<<< HEAD
                 <button class="tab-btn active" onclick="switchTab('farming', this)">FARMING</button>
                 <button class="tab-btn" onclick="switchTab('buildings', this)">BUILDINGS</button>
+=======
+                <button class="tab-btn active" onclick="showUpgradeCategory('farming')">FARMING</button>
+                <button class="tab-btn" onclick="showUpgradeCategory('buildings')">BUILDINGS</button>
+                <button class="tab-btn" onclick="showUpgradeCategory('wood')">Wood production</button>
+                <button class="tab-btn" onclick="showUpgradeCategory('mining')">Mining</button>
+                <button class="tab-btn" onclick="showUpgradeCategory('knowledge')">Education / knowledge</button>
+                <button class="tab-btn" onclick="showUpgradeCategory('nature')">Nature</button>
+                <button class="tab-btn" onclick="showUpgradeCategory('continents')">Continents</button>
+>>>>>>> add8234 (Fixed problems with merge)
             </nav>
 =======
 =======
@@ -125,6 +139,7 @@
         </main>
 >>>>>>> 17890c3 (yritan updateinfot teha)
     </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     <script>
@@ -258,5 +273,10 @@
 =======
     <script src="../static/js/game_unlock_list_logic.js"></script>
 >>>>>>> e0c8746 (Lisasin funtsiooni,  mis kuvab unlockUpgradede teksti ja tegin ka vastava loogika)
+=======
+    <script src="../static/js/mang.js"></script>
+    <script src="../static/js/game_unlock_list_logic.js"></script>
+    <script src="../static/js/game_upgade_list_logic.js"></script>
+>>>>>>> add8234 (Fixed problems with merge)
 </body>
 </html>

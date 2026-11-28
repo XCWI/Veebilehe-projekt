@@ -253,8 +253,9 @@ function upgradeFunction(upgradeId) {
 
     renderStats();
     renderUnlockedContent();
-    const category = document.getElementById("upgrade-category").value;
-    showUpgradeCategory(category);
+    if (typeof showUpgradeCategory === "function") {
+        showUpgradeCategory(selectedUpgradeCategory || "farming");
+    }
     return true;
 }
 
@@ -281,7 +282,8 @@ function upgradeUnlockFunction(upgradeId) {
 
     renderStats();
     renderUnlockedContent();
-    const category = document.getElementById("upgrade-category").value;
-    showUpgradeCategory(category);
+    if (typeof showUpgradeCategory === "function") {
+        showUpgradeCategory(selectedUpgradeCategory || "farming");
+    }
     return true;
 }
